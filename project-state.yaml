@@ -1,10 +1,10 @@
 project_id: little-dream-finance
 mode: guided
-current_phase: prototype
+current_phase: prototype-published
 requirements_version: 0.2
-gate_status: playable_initial_build_ready_visual_direction_pending
+gate_status: playable_initial_build_published_visual_direction_pending
 dt_handoff: pending
-sdlc_release: pending
+sdlc_release: prototype_published
 final_acceptance: pending
 confirmed:
   - 小學生為目標對象；生活理財投資為教學主題。
@@ -23,7 +23,6 @@ assumptions:
 open_questions:
   - 正式視覺方向仍待選擇三種同內容方案之一（docs/visual-directions.html）；本初版先採原創草稿風格供試玩。
   - 小學生年齡範圍尚未細分；目前按約 7–11 歲設計。
-  - GitHub 發布尚需 GitHub 寫入連線及有效提交作者身分。
 artifacts:
   project_brief: docs/project-brief.md
   design_tournament: docs/design-tournament.md
@@ -37,6 +36,8 @@ artifacts:
   blender_source: C:/blender/make_props.py
   blender_model: blender/little_dream_props.blend
   game_model: assets/little_dream_props.glb
+  github_repository: https://github.com/kellyku1025-stack/game2
+  github_initial_build_commit: e1b9332
 required_tests:
   - 手動完成兩關流程、錯答提示、鑰匙解鎖、分數與結算畫面。
   - 在視窗模式檢查 3D 道具位置、比例、中文顯示與互動覆蓋層。
@@ -50,4 +51,3 @@ known_limitations:
   - 目前是可玩初版，非最終驗收版本；正式視覺方案仍待使用者選擇。
   - 尚無玩家證據；設計評分均為 AI pre-score，不代表學習成效。
   - Blender Toolkit addon 未安裝；目前模型由 Blender Python 腳本生成。
-  - 尚未推送至 GitHub。

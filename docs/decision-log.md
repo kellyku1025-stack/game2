@@ -8,5 +8,5 @@
 | DEC-004 | Use guided DT-SDLC mode. | Inferred default | Educational product and uncertain gameplay/visual direction; user approval at design gates is required. | Project |
 | DEC-005 | Select gameplay candidate. | Approved: D — Cargo allocation / 貨艙星箱配置 | User selected D after reviewing the AI pre-score shortlist. | User |
 | DEC-006 | Select visual direction. | Pending | Compare three versions of the same cargo scene after gameplay approval. | User |
-| DEC-007 | Publish to GitHub target repository. | Requested; pending release gates and write authentication | User specified repository; no remote commit history, GitHub write connection, git identity, or successful push yet. | User / project |
+| DEC-007 | Publish to GitHub target repository. | Initial playable build published to `main` | User specified the repository. Initial build commit `e1b9332` was pushed successfully; remaining design approval and final acceptance gates are still open. | User |
 | DEC-008 | Produce a playable first build using the selected cargo-allocation gameplay while visual selection remains pending. | Confirmed by follow-up request | User explicitly asked to continue until the initial game was produced. The draft visuals remain provisional and are labelled accordingly. | User |

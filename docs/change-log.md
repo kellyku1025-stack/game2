@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5 — 發布至 GitHub
+
+- 將可玩初版、Blender 場景與 GLB、Godot 專案、啟動器及設計文件推送至 `kellyku1025-stack/game2` 的 `main` 分支。
+- 初版程式提交：`e1b9332`；Git author 明確標示為 OpenAI Codex。
+- 更新發布狀態與需求追蹤；正式視覺選擇、玩家測試及最終驗收仍待完成。
+
 ## 0.4 — 可玩初版
 
 - 確認 `Game2` 工作區為版本來源，並已將可玩初版同步至使用者指定的 `C:\Godot` 專案資料夾。

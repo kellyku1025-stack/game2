@@ -8,7 +8,7 @@
 | N-004 Per-level scores | FR-004 Show each level's score and total. | `game.gd`, `scores[]`, `refresh_hud()`. | T-002 both successful scores and wrong-submission deduction observed. | Pending. | Implemented in initial build |
 | N-005 Final learning progress | FR-005 Show both scores and completed learning units. | `game.gd`, `show_ending()`. | T-002 ending showed 2/2 units, each level and total score; restart tested. | Pending. | Implemented in initial build |
 | N-006 Original Blender props | FR-006 Provide editable BLEND and Godot-compatible GLB. | `blender/make_props.py`; `blender/little_dream_props.blend`; `assets/little_dream_props.glb`; runtime GLTF load in `game.gd`. | Blender generated BLEND/GLB; model preview visible in game. | Visual style approval pending. | Implemented in initial build |
-| N-007 Deploy to requested GitHub repository | NFR-001 Repository contains Godot source, Blender generator, and original game asset. | Local Git files prepared; `.gitignore` excludes `.godot/`. | Remote read succeeded; no push/commit identity or GitHub write connection. | User requested deployment; skill design/release gates remain pending. | Blocked/pending |
+| N-007 Deploy to requested GitHub repository | NFR-001 Repository contains Godot source, Blender generator, and original game asset. | `https://github.com/kellyku1025-stack/game2`, branch `main`; `.gitignore` excludes `.godot/`. | Initial build commit `e1b9332` pushed successfully. | Deployment request fulfilled; final product acceptance remains pending. | Published |
 
 ## Test register
 
