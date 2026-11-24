@@ -33,6 +33,7 @@ artifacts:
   change_log: docs/change-log.md
   traceability: docs/traceability.md
   skill_compliance: docs/skill-compliance.md
+  asset_register: docs/asset-register.md
   godot_project: project.godot
   godot_project_install: C:/Godot/project.godot
   game_launcher: 啟動遊戲.bat

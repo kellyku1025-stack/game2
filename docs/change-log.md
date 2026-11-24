@@ -4,7 +4,8 @@
 
 - 使用者確認 B「紙雕故事書」為正式視覺方向；將遊戲畫面調整為鼠尾草綠、紙卡其、磚橘與分層紙板風格。
 - 新增 Godot Web 匯出預設與 GitHub Actions Pages 自動建置／部署流程；儲存庫已改用 GitHub Actions 作為 Pages 發布來源。
-- 啟用繁體中文文字 shaping 資料，並記錄網頁建置與線上發布待 CI 驗證。
+- 加入 Noto Sans TC（SIL OFL 1.1）與授權清冊，修正瀏覽器匯出缺少中文字型的問題；啟用 CJK 文字 shaping 資料。
+- GitHub Pages 建置及部署成功；已記錄公開頁面等待中文字型修正後重驗。
 
 ## 0.6 — 技能套用稽核與文件校正
 

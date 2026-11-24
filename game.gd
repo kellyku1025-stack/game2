@@ -134,6 +134,7 @@ func _build_ui() -> void:
 	var layer := CanvasLayer.new()
 	add_child(layer)
 	var paper_theme := Theme.new()
+	paper_theme.default_font = load("res://assets/fonts/NotoSansTC-Variable.ttf")
 	paper_theme.set_color("font_color", "Label", Color("34443d"))
 	paper_theme.set_color("font_color", "Button", Color("34443d"))
 	paper_theme.set_stylebox("normal", "Button", _paper_style(Color("e6d8bb"), Color("9d704e"), 2, 7))
