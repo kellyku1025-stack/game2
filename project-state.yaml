@@ -1,10 +1,10 @@
 project_id: little-dream-finance
 mode: guided
-current_phase: build
+current_phase: web-deployed
 requirements_version: 0.3
-gate_status: four_unit_junior_high_revision_in_progress
+gate_status: four_unit_web_build_published_manual_gameplay_review_pending
 dt_handoff: pending
-sdlc_release: web_prototype_published
+sdlc_release: four_unit_web_prototype_published
 final_acceptance: pending
 confirmed:
   - 國中生為目標對象；生活理財投資為教學主題。
@@ -54,10 +54,12 @@ passed_tests:
   - Blender 5.2.4 LTS 腳本成功輸出 BLEND 與 GLB；遊戲透過 Godot GLTF API 載入模型，視窗中可見 3D 道具預覽。
   - Godot 4.7.2 Web 匯出成功；GitHub Pages Actions 將遊戲發布到 https://kellyku1025-stack.github.io/game2/，根網址導向版本化建置路徑。
   - 公開瀏覽器頁面已目視確認場景 B 與繁體中文正常顯示，瀏覽器 console 無 error/warning。
+  - 國中生四單元修訂在提交 faed467 的 GitHub Actions run #7 匯出並部署成功；瀏覽器確認新版本 HUD 顯示「國中生生活理財任務」與單元 1 / 4。
 pending_tests:
-  - 本次國中生四單元改版尚未執行 Godot 匯入、手動遊玩或網頁重新部署驗證。
+  - 國中生四單元改版尚未逐項手動遊玩；預算邊界、九項商品解釋、六題流程、突發支出重試及重新開始均待確認。
+  - 目標年齡／教師可用性測試待安排。
 known_limitations:
-  - 四單元改版目前是待驗證的本機實作；GitHub Pages 目前仍是先前兩關版本。
+  - 四單元網頁版已部署；目前只確認首頁載入和更新後的 HUD，完整互動流程尚未手動測試。
   - 國中生／教師玩家證據與最終驗收仍待完成。
   - 尚無玩家證據；設計評分均為 AI pre-score，不代表學習成效。
   - Blender Toolkit addon 未安裝；目前模型由 Blender Python 腳本生成。

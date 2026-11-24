@@ -32,6 +32,6 @@ GitHub Pages 會把此儲存庫的 Godot 網頁匯出檔託管成靜態網站，
 
 ## 版本狀態
 
-四單元國中生改版已寫入本機 Godot 專案；目前尚未完成新版本的手動流程驗證與 GitHub Pages 重新發布。部署中的網址目前仍可能是先前兩單元版本。專案決策、測試追蹤和限制記錄在 `docs/` 及 `project-state.yaml`。
+四單元國中生改版已推送並發布至 GitHub Pages（提交 `faed467`）。瀏覽器已確認新頁面載入、繁體中文和「國中生生活理財任務」HUD 顯示正常；四單元互動流程仍待逐題手動驗證。專案決策、測試追蹤和限制記錄在 `docs/` 及 `project-state.yaml`。
 
 技能套用範圍記錄於 [`docs/skill-compliance.md`](docs/skill-compliance.md)。
