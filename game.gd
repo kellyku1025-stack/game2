@@ -261,7 +261,7 @@ func refresh_hud() -> void:
 	var total_score := 0
 	for score in scores: total_score += score
 	var rows := [
-		"小小夢魔｜國中生生活理財任務",
+		"星港理財局｜零用錢任務",
 		"單元 %d / 4　%s" % [stage + 1, level_name],
 		"本單元 %d 分　｜　累計 %d / 400　｜　本單元星鑰：%s" % [scores[stage], total_score, key_text],
 		"A / D 或方向鍵移動　　完成互動取得星鑰"
@@ -562,7 +562,7 @@ func show_ending() -> void:
 	result.add_theme_constant_override("separation", 16)
 	panel.add_child(result)
 	var title := Label.new()
-	title.text = "穿越星港迷霧｜理財成長紀錄"
+	title.text = "星港任務完成｜理財成長報告"
 	title.add_theme_font_size_override("font_size", 27)
 	title.add_theme_color_override("font_color", Color("a35435"))
 	result.add_child(title)

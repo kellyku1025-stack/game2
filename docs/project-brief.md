@@ -1,4 +1,4 @@
-# 小小夢魔：理財迷航 — Project Brief
+# 星港理財局：零用錢任務 — Project Brief
 
 Status: approved requirement change; revised prototype pending verification
 

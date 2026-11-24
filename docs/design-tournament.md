@@ -1,4 +1,4 @@
-# Gameplay Tournament — 小小夢魔：理財迷航
+# Gameplay Tournament — 星港理財局：零用錢任務
 
 Status: gameplay direction D and visual direction B are selected by the user. The approved style is Paper-cut Storybook: sage green, paper khaki, brick orange, layered cardstock forms, and clearly legible interaction objects. Player/teacher evidence and final acceptance remain pending.
 
