@@ -14,4 +14,4 @@
 
 - T-001: Godot 4.7.2 headless startup of `main.tscn` — passed; game script reported no errors.
 - T-002: manual two-level valid/invalid allocation, score, key, ending, and restart — passed in the Godot window; the final penalty was confirmed as 25 points for an invalid complete allocation.
-- T-003: Blender 5.2.4 LTS generation and Godot GLB import — passed; visual appearance not manually inspected.
+- T-003: Blender 5.2.4 LTS generation and Godot GLTF runtime load — passed; the model preview was visible in the game window. Formal visual direction remains pending.

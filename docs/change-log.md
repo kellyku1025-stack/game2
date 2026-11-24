@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.6 — 技能套用稽核與文件校正
+
+- 新增 `skill-compliance.md`，分別記錄 DT-SDLC、game-design 與 Blender Toolkit 的實際套用範圍。
+- 修正設計競賽、專案簡報及測試表中落後於初版的狀態；確認遊戲視窗中已看見 Blender GLB 預覽。
+- 保留視覺選擇與最終驗收為待辦；不把原型使用的臨時畫風當成正式批准。
+
 ## 0.5 — 發布至 GitHub
 
 - 將可玩初版、Blender 場景與 GLB、Godot 專案、啟動器及設計文件推送至 `kellyku1025-stack/game2` 的 `main` 分支。

@@ -46,11 +46,11 @@ Non-goals: real money, real investment recommendations, online accounts, student
 - Do not frame an investment as guaranteed or risk-free.
 - Do not use timers or randomized payouts that reward guessing unless approved by the design gate.
 - No identifiable child data; obtain required guardian/institutional approval before any playtest.
-- Godot 4.7.2 and Blender 5.2.4 LTS are installed; game concept and visual direction remain unapproved.
+- Godot 4.7.2 and Blender 5.2.4 LTS are installed; gameplay direction D is selected, the playable first build exists, and formal visual direction remains pending.
 
 ## Delivery context
 
-Windows desktop Godot project. GitHub repository target: `https://github.com/kellyku1025-stack/game2`; publication is pending design gates and write authentication.
+Windows desktop Godot project. The playable first build is published at `https://github.com/kellyku1025-stack/game2` on `main`; visual approval and final acceptance remain pending.
 
 ## Success measures
 
@@ -75,10 +75,10 @@ Windows desktop Godot project. GitHub repository target: `https://github.com/kel
 
 ## Open questions
 
-- Human gameplay-candidate selection and subsequent visual-direction selection.
+- Formal visual-direction selection; gameplay candidate D has already been selected.
 - Exact age band and classroom time allocation.
 - GitHub connection and commit author identity.
 
 ## User approval
 
-Original two-level brief is confirmed by the user's direct request. The evolved gameplay and visual design are not yet approved.
+Original two-level brief is confirmed by the user's direct request. Gameplay direction D was selected by the user; a playable first build was explicitly requested. Formal visual direction remains unapproved.

@@ -30,6 +30,7 @@ artifacts:
   decision_log: docs/decision-log.md
   change_log: docs/change-log.md
   traceability: docs/traceability.md
+  skill_compliance: docs/skill-compliance.md
   godot_project: project.godot
   godot_project_install: C:/Godot/project.godot
   game_launcher: 啟動遊戲.bat

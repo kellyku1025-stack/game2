@@ -1,6 +1,6 @@
 # Gameplay Tournament — 小小夢魔：理財迷航
 
-Status: gameplay direction D is selected by the user. The visual-direction gate is pending; do not rework the game until a visual direction is selected.
+Status: gameplay direction D is selected by the user. The user later explicitly authorized a playable first build while the visual-direction gate remained pending. Current game visuals are provisional; this does not approve a final visual direction.
 
 ## Locked profile and evidence plan
 
@@ -66,4 +66,4 @@ Use age-appropriate tasks and guardian/institution consent before child playtest
 
 The user selected **D — 貨艙星箱配置**. Alternatives A and E remain viable but were not selected; B is the close fourth-place option; C and F are dominated by D on G/P/D. This decision is recorded in `decision-log.md`.
 
-The current source still contains the earlier multiple-choice prototype loop and must be reworked to match D after visual approval. The next gate is visual selection. Review `visual-directions.html`, which shows three versions of the same second-level scene, question, token counts, character position, and locked-key state. Choose A, B, or C before implementation changes.
+The playable first build now implements D using three-box saving and investment allocation. Its visual treatment remains provisional. The next design gate is visual selection: review `visual-directions.html`, which shows three versions of the same second-level scene, question, token counts, character position, and locked-key state, then choose A, B, or C before final art polish.
