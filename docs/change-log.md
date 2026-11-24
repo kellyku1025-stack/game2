@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.7 — 視覺方向 B 與 GitHub Pages 部署
+
+- 使用者確認 B「紙雕故事書」為正式視覺方向；將遊戲畫面調整為鼠尾草綠、紙卡其、磚橘與分層紙板風格。
+- 新增 Godot Web 匯出預設與 GitHub Actions Pages 自動建置／部署流程；儲存庫已改用 GitHub Actions 作為 Pages 發布來源。
+- 啟用繁體中文文字 shaping 資料，並記錄網頁建置與線上發布待 CI 驗證。
+
 ## 0.6 — 技能套用稽核與文件校正
 
 - 新增 `skill-compliance.md`，分別記錄 DT-SDLC、game-design 與 Blender Toolkit 的實際套用範圍。

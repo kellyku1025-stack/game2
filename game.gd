@@ -79,77 +79,117 @@ func _input(event: InputEvent) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var second := stage == 1
-	draw_rect(Rect2(0, 0, 1280, 720), Color("111a25") if not second else Color("171923"))
-	# Original dreamlike cargo hold, built from simple 2D shapes.
-	draw_rect(Rect2(0, 0, 1280, 112), Color("182332"))
-	draw_rect(Rect2(0, 108, 1280, 20), Color("3a332f"))
+	var wall := Color("dbe6d8") if stage == 0 else Color("d9e1d3")
+	var paper_shadow := Color("786f5d", 0.22)
+	draw_rect(Rect2(0, 0, 1280, 720), Color("e8dfc9"))
+	# Layered cut-paper wall panels and folded beams.
+	draw_colored_polygon(PackedVector2Array([Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 126), Vector2(0, 164)]), paper_shadow)
+	draw_colored_polygon(PackedVector2Array([Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 112), Vector2(0, 148)]), wall)
+	draw_line(Vector2(0, 148), Vector2(1280, 112), Color("91a78d"), 5)
 	for i in range(7):
 		var x := float(i * 192 - 15)
-		draw_rect(Rect2(x, 128, 166, 286), Color("202c38") if not second else Color("292733"))
-		draw_rect(Rect2(x + 12, 141, 142, 261), Color("293844") if not second else Color("34313b"))
-		for y in range(160, 402, 48):
-			draw_line(Vector2(x + 16, y), Vector2(x + 150, y), Color("667078", 0.25), 2)
-	draw_rect(Rect2(0, 432, 1280, 288), Color("29272a"))
-	for y in range(466, 720, 48):
-		draw_line(Vector2(0, y), Vector2(1280, y), Color("97866d", 0.28), 2)
-	for x in range(0, 1280, 105):
-		draw_line(Vector2(x, 432), Vector2(x, 720), Color("97866d", 0.22), 2)
-	# A cargo doorway at the far end marks the level transition.
-	draw_rect(Rect2(1170, 204, 82, 236), Color("10151d"))
-	draw_rect(Rect2(1181, 216, 60, 211), Color("424b50") if solved[stage] else Color("34343a"))
-	if solved[stage]:
-		draw_rect(Rect2(1180, 216, 5, 211), Color("e7c46e"))
-	# Light over the cargo workbench.
-	draw_circle(Vector2(900, 300), 145, Color(0.89, 0.65, 0.28, 0.09))
-	draw_rect(Rect2(773, 237, 24, 209), Color("15161a"))
-	draw_rect(Rect2(1012, 237, 24, 209), Color("15161a"))
-	draw_rect(Rect2(750, 337, 300, 25), Color("6a4933"))
-	draw_rect(Rect2(762, 423, 276, 22), Color("493b32"))
-	# Three small cargo boxes hint at the allocation interaction.
+		var panel_points := PackedVector2Array([Vector2(x, 158), Vector2(x + 164, 149), Vector2(x + 164, 414), Vector2(x, 424)])
+		_draw_paper_layer(panel_points, Color("887c65", 0.16), [Color("b8c9b2"), Color("e6d8bb"), Color("d9c7a4")][i % 3], 7.0)
+		for y in range(180, 402, 58):
+			draw_line(Vector2(x + 18, y), Vector2(x + 145, y - 5), Color("788f7d", 0.30), 3)
+	# A cream floor with paper tile seams.
+	draw_colored_polygon(PackedVector2Array([Vector2(0, 450), Vector2(1280, 424), Vector2(1280, 720), Vector2(0, 720)]), Color("c5b99e"))
+	for y in range(480, 720, 52):
+		draw_line(Vector2(0, y), Vector2(1280, y - 26), Color("f0e5cd", 0.8), 3)
+	for x in range(0, 1280, 112):
+		draw_line(Vector2(x, 445), Vector2(x - 22, 720), Color("f0e5cd", 0.72), 3)
+	# The arch opens after the key is earned.
+	var door := PackedVector2Array([Vector2(1162, 438), Vector2(1162, 265), Vector2(1179, 226), Vector2(1211, 211), Vector2(1245, 226), Vector2(1260, 265), Vector2(1260, 438)])
+	_draw_paper_layer(door, paper_shadow, Color("a66a42") if solved[stage] else Color("728775"), 8.0)
+	draw_colored_polygon(PackedVector2Array([Vector2(1176, 429), Vector2(1176, 266), Vector2(1188, 238), Vector2(1211, 226), Vector2(1234, 238), Vector2(1246, 266), Vector2(1246, 429)]), Color("e8dfc9"))
+	if solved[stage]: draw_line(Vector2(1178, 425), Vector2(1178, 264), Color("d38b54"), 7)
+	# Paper workbench and parcels make the interaction easy to spot.
+	draw_circle(Vector2(900, 300), 145, Color("f3c96e", 0.17))
+	draw_rect(Rect2(773, 237, 24, 209), Color("9c714e"))
+	draw_rect(Rect2(1012, 237, 24, 209), Color("9c714e"))
+	draw_rect(Rect2(758, 343, 300, 23), Color("b8794c"))
+	draw_line(Vector2(760, 343), Vector2(1056, 343), Color("e2ad71"), 5)
+	draw_rect(Rect2(770, 424, 276, 18), Color("a66a42"))
 	for i in range(3):
 		var bx := 798.0 + i * 72
-		draw_rect(Rect2(bx, 307, 53, 29), [Color("546b69"), Color("746248"), Color("574d6c")][i])
-		draw_line(Vector2(bx + 3, 312), Vector2(bx + 50, 312), Color("e4c87f", 0.55), 2)
-	# Dreamer silhouette in a rain cloak.
-	draw_circle(Vector2(player_x, 371), 14, Color("d9c27a"))
-	draw_colored_polygon(PackedVector2Array([Vector2(player_x - 16, 383), Vector2(player_x + 16, 383), Vector2(player_x + 24, 434), Vector2(player_x - 24, 434)]), Color("d2a347"))
-	draw_line(Vector2(player_x - 10, 430), Vector2(player_x - 15, 455), Color("15161a"), 5)
-	draw_line(Vector2(player_x + 10, 430), Vector2(player_x + 15, 455), Color("15161a"), 5)
+		var parcel := PackedVector2Array([Vector2(bx, 335), Vector2(bx + 4, 304), Vector2(bx + 48, 304), Vector2(bx + 53, 335)])
+		_draw_paper_layer(parcel, paper_shadow, [Color("718f78"), Color("c38a55"), Color("8b7f9e")][i], 4.0)
+		draw_line(Vector2(bx + 8, 311), Vector2(bx + 46, 311), Color("f2dfbd"), 3)
+	# Original little traveler in a warm paper cloak.
+	draw_line(Vector2(player_x - 10, 430), Vector2(player_x - 15, 455), Color("695747"), 5)
+	draw_line(Vector2(player_x + 10, 430), Vector2(player_x + 15, 455), Color("695747"), 5)
+	draw_circle(Vector2(player_x, 371), 14, Color("d5a46f"))
+	_draw_paper_layer(PackedVector2Array([Vector2(player_x - 17, 383), Vector2(player_x + 17, 383), Vector2(player_x + 26, 434), Vector2(player_x - 25, 434)]), paper_shadow, Color("c47b45"), 5.0)
+	draw_colored_polygon(PackedVector2Array([Vector2(player_x - 11, 392), Vector2(player_x + 11, 392), Vector2(player_x + 16, 430), Vector2(player_x - 16, 430)]), Color("e3a95d"))
+
+func _draw_paper_layer(points: PackedVector2Array, shadow: Color, paper: Color, offset: float) -> void:
+	var shifted := PackedVector2Array()
+	for point in points:
+		shifted.append(point + Vector2(offset, offset))
+	draw_colored_polygon(shifted, shadow)
+	draw_colored_polygon(points, paper)
+	draw_polyline(points, Color("fff7e7", 0.58), 2.0, true)
 
 func _build_ui() -> void:
 	var layer := CanvasLayer.new()
 	add_child(layer)
+	var paper_theme := Theme.new()
+	paper_theme.set_color("font_color", "Label", Color("34443d"))
+	paper_theme.set_color("font_color", "Button", Color("34443d"))
+	paper_theme.set_stylebox("normal", "Button", _paper_style(Color("e6d8bb"), Color("9d704e"), 2, 7))
+	paper_theme.set_stylebox("hover", "Button", _paper_style(Color("f2e5ca"), Color("a66a42"), 3, 7))
+	paper_theme.set_stylebox("pressed", "Button", _paper_style(Color("c9d5c3"), Color("718f78"), 2, 7))
+	paper_theme.set_stylebox("focus", "Button", _paper_style(Color("00000000"), Color("a66a42"), 2, 7))
 	hud = VBoxContainer.new()
+	hud.theme = paper_theme
 	hud.position = Vector2(28, 20)
 	hud.add_theme_constant_override("separation", 5)
 	layer.add_child(hud)
 	_add_model_preview(layer)
 	notice_label = Label.new()
+	notice_label.theme = paper_theme
 	notice_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	notice_label.position = Vector2(-330, -64)
 	notice_label.size = Vector2(660, 40)
 	notice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	notice_label.add_theme_color_override("font_color", Color("f3dfb6"))
+	notice_label.add_theme_color_override("font_color", Color("34443d"))
 	notice_label.add_theme_font_size_override("font_size", 18)
 	layer.add_child(notice_label)
 	travel_button = Button.new()
+	travel_button.theme = paper_theme
 	travel_button.position = Vector2(28, 650)
 	travel_button.size = Vector2(230, 46)
 	travel_button.text = "前往發光貨桌"
 	travel_button.pressed.connect(_on_travel_pressed)
 	layer.add_child(travel_button)
 	overlay = ColorRect.new()
-	overlay.color = Color(0.02, 0.025, 0.04, 0.82)
+	overlay.color = Color(0.18, 0.23, 0.19, 0.62)
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.visible = false
 	layer.add_child(overlay)
 	panel = PanelContainer.new()
+	panel.theme = paper_theme
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	panel.position = Vector2(-365, -285)
 	panel.size = Vector2(730, 570)
+	panel.add_theme_stylebox_override("panel", _paper_style(Color("f5ecd8"), Color("a66a42"), 5, 10))
 	panel.visible = false
 	layer.add_child(panel)
+
+func _paper_style(fill: Color, border: Color, width: int, shadow_size: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = fill
+	style.border_color = border
+	style.set_border_width_all(width)
+	style.set_corner_radius_all(5)
+	style.shadow_color = Color("594e3d", 0.22)
+	style.shadow_size = shadow_size
+	style.shadow_offset = Vector2(3, 4)
+	style.content_margin_left = 12
+	style.content_margin_right = 12
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	return style
 
 func _add_model_preview(layer: CanvasLayer) -> void:
 	var display := SubViewportContainer.new()
@@ -211,7 +251,7 @@ func refresh_hud() -> void:
 	for i in rows.size():
 		var label := Label.new()
 		label.text = rows[i]
-		label.add_theme_color_override("font_color", [Color("f2ddb0"), Color("d7dce0"), Color("e9c879"), Color("b7c1c6")][i])
+		label.add_theme_color_override("font_color", [Color("34443d"), Color("52665b"), Color("a66a42"), Color("68736a")][i])
 		if i == 0: label.add_theme_font_size_override("font_size", 23)
 		hud.add_child(label)
 	if is_instance_valid(notice_label):
@@ -233,12 +273,13 @@ func open_interaction() -> void:
 func _build_lesson_panel() -> void:
 	for child in panel.get_children(): child.queue_free()
 	lesson_box = VBoxContainer.new()
+	lesson_box.theme = panel.theme
 	lesson_box.add_theme_constant_override("separation", 11)
 	panel.add_child(lesson_box)
 	var title := Label.new()
 	title.text = LESSON_TITLES[stage]
 	title.add_theme_font_size_override("font_size", 27)
-	title.add_theme_color_override("font_color", Color("f1d28d"))
+	title.add_theme_color_override("font_color", Color("a35435"))
 	lesson_box.add_child(title)
 	var prompt := Label.new()
 	prompt.text = LESSON_PROMPTS[stage]
@@ -248,11 +289,11 @@ func _build_lesson_panel() -> void:
 	var rule := Label.new()
 	rule.text = LESSON_RULES[stage]
 	rule.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	rule.add_theme_color_override("font_color", Color("c5d4d5"))
+	rule.add_theme_color_override("font_color", Color("52665b"))
 	lesson_box.add_child(rule)
 	total_label = Label.new()
 	total_label.add_theme_font_size_override("font_size", 20)
-	total_label.add_theme_color_override("font_color", Color("e8c66e"))
+	total_label.add_theme_color_override("font_color", Color("718f78"))
 	lesson_box.add_child(total_label)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
@@ -260,6 +301,8 @@ func _build_lesson_panel() -> void:
 	allocation_labels.clear()
 	for index in range(3):
 		var card := PanelContainer.new()
+		card.theme = panel.theme
+		card.add_theme_stylebox_override("panel", _paper_style(Color("eee3ca"), Color("91a78d"), 2, 5))
 		card.custom_minimum_size = Vector2(215, 145)
 		row.add_child(card)
 		var column := VBoxContainer.new()
@@ -325,7 +368,7 @@ func refresh_allocation_display() -> void:
 func _submit_allocation() -> void:
 	if _allocated_total() != TOTALS[stage]:
 		feedback_label.text = "星幣總數還不正確，請補齊或取回後再確認。這次調整不扣分。"
-		feedback_label.add_theme_color_override("font_color", Color("e8c66e"))
+		feedback_label.add_theme_color_override("font_color", Color("a35435"))
 		return
 	var valid := false
 	if stage == 0:
@@ -357,7 +400,7 @@ func _mistake(hint: String, message: String) -> void:
 	mistakes[stage] += 1
 	scores[stage] = maxi(40, 100 - mistakes[stage] * 25)
 	feedback_label.text = "%s\n提示：%s\n本關目前得分：%d" % [message, hint, scores[stage]]
-	feedback_label.add_theme_color_override("font_color", Color("f2bf91"))
+	feedback_label.add_theme_color_override("font_color", Color("a35435"))
 	refresh_hud()
 
 func _close_panel() -> void:
@@ -401,12 +444,13 @@ func show_ending() -> void:
 	overlay.visible = true
 	for child in panel.get_children(): child.queue_free()
 	var result := VBoxContainer.new()
+	result.theme = panel.theme
 	result.add_theme_constant_override("separation", 16)
 	panel.add_child(result)
 	var title := Label.new()
 	title.text = "穿越星港迷霧｜理財成長紀錄"
 	title.add_theme_font_size_override("font_size", 27)
-	title.add_theme_color_override("font_color", Color("f1d28d"))
+	title.add_theme_color_override("font_color", Color("a35435"))
 	result.add_child(title)
 	var details := Label.new()
 	details.text = "第一關｜儲蓄規劃：%d / 100\n第二關｜分散投資：%d / 100\n總分：%d / 200\n\n學習進度：完成 2 / 2 個互動單元\n\n你練習先滿足需要、保留儲蓄，再把投資分散到不同選項。每次調整配置，都是讓未來更穩健的一小步。" % [scores[0], scores[1], scores[0] + scores[1]]

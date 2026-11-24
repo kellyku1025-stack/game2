@@ -9,6 +9,7 @@
 *{box-sizing:border-box}body{margin:0;padding:30px clamp(16px,3vw,48px) 42px;background:radial-gradient(ellipse at 50% 0,#273447 0,#10151d 56%)}
 h1{font-size:clamp(26px,3vw,38px);margin:0 0 8px}.intro{color:#c0cad2;margin:0 0 24px;line-height:1.65;max-width:950px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:18px;align-items:start}.card{border:1px solid #485463;border-radius:16px;background:#171f2a;overflow:hidden;box-shadow:0 14px 36px #0007}.caption{padding:15px 17px 17px}.caption h2{font-size:19px;margin:0 0 7px}.caption p{font-size:14px;line-height:1.55;color:#c4ccd2;margin:0 0 10px}.palette{font-size:12px;letter-spacing:.02em;color:#e6cc91}
+.card.selected{border:3px solid #b7c99f;box-shadow:0 0 0 3px #b7c99f44,0 14px 36px #0007}.selected-mark{display:inline-block;padding:3px 8px;margin-left:8px;border-radius:99px;background:#718f78;color:#fff8e8;font-size:11px;vertical-align:middle}
 .scene{position:relative;aspect-ratio:16/9;overflow:hidden;isolation:isolate;color:var(--ink);background:var(--wall);}
 .scene:before{content:"";position:absolute;inset:0;z-index:-2;background:var(--wall-art)}.scene:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--texture)}
 .scene.gloom{--ink:#f4e7c4;--wall:#111c2b;--wall-art:radial-gradient(ellipse at 76% 46%,#b37a3d36 0 12%,transparent 38%),linear-gradient(180deg,#172435 0 68%,#29272a 68%);--texture:repeating-linear-gradient(90deg,transparent 0 12%,#050a1020 12.2% 12.6%),linear-gradient(180deg,#070b1466,transparent 36%,#06080b55);--panel:#1d2a38eF;--crate:#4d3a32;--edge:#8d6a4d;--accent:#e0ad58;--muted:#d5c8aa}
@@ -39,7 +40,7 @@ h1{font-size:clamp(26px,3vw,38px);margin:0 0 8px}.intro{color:#c0cad2;margin:0 0
     </div>
     <div class="caption"><h2 id="v1-title">A｜暗霧童話</h2><p>延續昏暗冒險與暖色提燈，保留探索感；題目面板保持明亮，降低黑暗場景對閱讀的干擾。</p><div class="palette">深藍 × 舊木 × 提燈金｜氣氛優先</div></div>
   </article>
-  <article class="card" aria-labelledby="v2-title">
+  <article class="card selected" aria-labelledby="v2-title">
     <div class="scene paper">
       <div class="top"><span class="brand">小小夢魔 · 霧港貨艙</span><span class="hud">第 2 關　得分 0 / 100　🔒 鑰匙</span></div>
       <div class="prompt"><span class="tag">投資與風險</span><h3>把星星分散到不同店家，降低集中風險。</h3><p>目前 A 箱放了 8 枚，B、C 箱各放 1 枚。拖曳星星，再按「揭開天候牌」。</p></div>
@@ -47,7 +48,7 @@ h1{font-size:clamp(26px,3vw,38px);margin:0 0 8px}.intro{color:#c0cad2;margin:0 0
       <div class="crates"><div class="crate"><span class="crate-label">投資箱 A</span><span class="stars">★★★★<br>★★★★</span><b class="count">8 枚</b></div><div class="crate"><span class="crate-label">投資箱 B</span><span class="stars">★</span><b class="count">1 枚</b></div><div class="crate"><span class="crate-label">投資箱 C</span><span class="stars">★</span><b class="count">1 枚</b></div></div>
       <div class="key">鑰匙：答對後取得</div><div class="table"></div><span class="scene-label">B　紙雕故事書</span>
     </div>
-    <div class="caption"><h2 id="v2-title">B｜紙雕故事書</h2><p>以分層紙板與柔和色塊呈現貨艙，角色與道具更親切，較容易辨認可操作物件。</p><div class="palette">鼠尾草綠 × 紙卡其 × 磚橘｜親和優先</div></div>
+    <div class="caption"><h2 id="v2-title">B｜紙雕故事書 <span class="selected-mark">已選定</span></h2><p>以分層紙板與柔和色塊呈現貨艙，角色與道具更親切，較容易辨認可操作物件。</p><div class="palette">鼠尾草綠 × 紙卡其 × 磚橘｜親和優先</div></div>
   </article>
   <article class="card" aria-labelledby="v3-title">
     <div class="scene beacon">
@@ -60,6 +61,6 @@ h1{font-size:clamp(26px,3vw,38px);margin:0 0 8px}.intro{color:#c0cad2;margin:0 0
     <div class="caption"><h2 id="v3-title">C｜霧光航標</h2><p>深色港灣搭配明確的青綠輪廓與金色重點；箱體邊界、可操作區和狀態標示最清楚。</p><div class="palette">海軍藍 × 霧光青 × 航標金｜辨識優先</div></div>
   </article>
 </main>
-<p class="intro" style="margin-top:22px"><strong>共同設計條件：</strong>原創角色與場景；不使用 Little Nightmares 角色或場景素材；不加入倒數計時；三款均維持相同操作與題目。請選 A、B、C，或提出要調整的元素。</p>
+<p class="intro" style="margin-top:22px"><strong>共同設計條件：</strong>原創角色與場景；不使用 Little Nightmares 角色或場景素材；不加入倒數計時；三款均維持相同操作與題目。使用者已正式選定 B「紙雕故事書」。</p>
 </body>
 </html>

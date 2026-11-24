@@ -1,6 +1,6 @@
 # Gameplay Tournament — 小小夢魔：理財迷航
 
-Status: gameplay direction D is selected by the user. The user later explicitly authorized a playable first build while the visual-direction gate remained pending. Current game visuals are provisional; this does not approve a final visual direction.
+Status: gameplay direction D and visual direction B are selected by the user. The approved style is Paper-cut Storybook: sage green, paper khaki, brick orange, layered cardstock forms, and clearly legible interaction objects. Player/teacher evidence and final acceptance remain pending.
 
 ## Locked profile and evidence plan
 
@@ -66,4 +66,4 @@ Use age-appropriate tasks and guardian/institution consent before child playtest
 
 The user selected **D — 貨艙星箱配置**. Alternatives A and E remain viable but were not selected; B is the close fourth-place option; C and F are dominated by D on G/P/D. This decision is recorded in `decision-log.md`.
 
-The playable first build now implements D using three-box saving and investment allocation. Its visual treatment remains provisional. The next design gate is visual selection: review `visual-directions.html`, which shows three versions of the same second-level scene, question, token counts, character position, and locked-key state, then choose A, B, or C before final art polish.
+The playable build implements D using three-box saving and investment allocation. Visual direction B is approved; the Godot scene is being updated to the selected paper-cut storybook style. Player/teacher evidence and final acceptance remain open.

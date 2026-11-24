@@ -1,8 +1,8 @@
 project_id: little-dream-finance
 mode: guided
-current_phase: prototype-published
+current_phase: web-deployment
 requirements_version: 0.2
-gate_status: playable_initial_build_published_visual_direction_pending
+gate_status: visual_direction_b_selected_web_deployment_pending
 dt_handoff: pending
 sdlc_release: prototype_published
 final_acceptance: pending
@@ -14,6 +14,8 @@ confirmed:
   - 教育優先 profile：Learning 50%, Appropriate challenge 25%, Engagement 15%, Motivation 10%（Learning-first preset）。
   - Guessing/exploitation penalty strength is strong; cognitive-overload penalty strength is moderate.
   - 玩法方向已由使用者選定：D「貨艙星箱配置」。
+  - 正式視覺方向已由使用者選定：B「紙雕故事書」（鼠尾草綠、紙卡其、磚橘與分層紙板造型）。
+  - 使用者要求部署瀏覽器版至 GitHub Pages（GitHub.io）。
   - 使用者要求持續製作直到可玩的初版完成；已授權製作垂直切片。
 assumptions:
   - Windows 單人桌面版；短繁體中文文字；沒有計時壓力、真實金錢或交易。
@@ -21,7 +23,7 @@ assumptions:
   - 不收集個人資料；任何兒童測試先取得監護人／機構同意。
   - 將 strong/moderate 量化為 pG=0.25、pC=0.15；暫不設 G/C 硬性淘汰門檻，使用 review flags。
 open_questions:
-  - 正式視覺方向仍待選擇三種同內容方案之一（docs/visual-directions.html）；本初版先採原創草稿風格供試玩。
+  - 網頁版需在 GitHub Actions 成功匯出與部署後，才能確認可公開遊玩。
   - 小學生年齡範圍尚未細分；目前按約 7–11 歲設計。
 artifacts:
   project_brief: docs/project-brief.md
@@ -49,6 +51,6 @@ passed_tests:
   - 實際提交錯誤配置，確認提示、星鑰鎖定與每次扣 25 分（100 降至 75）；星幣未分完時改為不扣分提醒。
   - Blender 5.2.4 LTS 腳本成功輸出 BLEND 與 GLB；遊戲透過 Godot GLTF API 載入模型，視窗中可見 3D 道具預覽。
 known_limitations:
-  - 目前是可玩初版，非最終驗收版本；正式視覺方案仍待使用者選擇。
+  - 目前是可玩初版，非最終驗收版本；視覺方向 B 已選定，兒童／教師玩家證據與最終驗收仍待完成。
   - 尚無玩家證據；設計評分均為 AI pre-score，不代表學習成效。
   - Blender Toolkit addon 未安裝；目前模型由 Blender Python 腳本生成。

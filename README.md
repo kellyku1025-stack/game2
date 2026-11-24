@@ -1,8 +1,12 @@
 # 小小夢魔：星港理財迷航
 
+> [開啟瀏覽器試玩版（GitHub Pages）](https://kellyku1025-stack.github.io/game2/)
+
 給國小學童的 Godot 4 可玩初版。玩家探索原創夢幻貨艙，用星箱配置練習儲蓄、生活需要與分散投資。場景、角色、道具與文字均為原創；Blender 製作的提燈、星星幣和鑰匙會顯示在遊戲右上方。
 
 ## 快速開始
+
+GitHub Pages 會把此儲存庫的 Godot 網頁匯出檔託管成靜態網站，讓玩家可用支援 WebAssembly／WebGL 2 的瀏覽器開啟遊戲，不必下載 Godot 或安裝桌面版。每次更新 `main` 分支後，GitHub Actions 會重新匯出並發布。
 
 在 Windows 上雙擊 `啟動遊戲.bat`。需要 Godot 4.3 以上；預設啟動器位置為 `C:\Godot\Godot_v4.7.2-stable_win64.exe`。
 
