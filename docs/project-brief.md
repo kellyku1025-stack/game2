@@ -46,11 +46,11 @@ Non-goals: real money, real investment recommendations, online accounts, student
 - Do not frame an investment as guaranteed or risk-free.
 - Do not use timers or randomized payouts that reward guessing unless approved by the design gate.
 - No identifiable child data; obtain required guardian/institutional approval before any playtest.
-- Godot 4.7.2 and Blender 5.2.4 are installed; gameplay direction D and visual direction B (Paper-cut Storybook) are selected. The playable build is being prepared for browser deployment.
+- Godot 4.7.2 and Blender 5.2.4 are installed; gameplay direction D and visual direction B (Paper-cut Storybook) are selected. The playable build is published on GitHub Pages with a versioned path for each deployment.
 
 ## Delivery context
 
-Windows desktop Godot project, with a browser build to be published through GitHub Pages Actions at `https://kellyku1025-stack.github.io/game2/`.
+Windows desktop Godot project with a browser build published through GitHub Pages Actions at `https://kellyku1025-stack.github.io/game2/`.
 
 ## Success measures
 

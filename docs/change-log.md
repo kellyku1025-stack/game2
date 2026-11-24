@@ -6,6 +6,7 @@
 - 新增 Godot Web 匯出預設與 GitHub Actions Pages 自動建置／部署流程；儲存庫已改用 GitHub Actions 作為 Pages 發布來源。
 - 加入 Noto Sans TC（SIL OFL 1.1）與授權清冊，修正瀏覽器匯出缺少中文字型的問題；啟用 CJK 文字 shaping 資料。
 - GitHub Pages 建置及部署流程加入提交版本目錄，根網址自動轉至最新版本，避免瀏覽器沿用舊匯出檔快取。
+- Godot 4.7.2 網頁匯出與 GitHub Pages 部署成功；目視確認公開頁面能顯示場景 B 與繁體中文。
 
 ## 0.6 — 技能套用稽核與文件校正
 
