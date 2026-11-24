@@ -32,7 +32,9 @@ jobs:
           curl --fail --location --retry 3 "$release/Godot_v4.7.2-stable_export_templates.tpz" -o "$RUNNER_TEMP/templates.tpz"
           mkdir -p "$RUNNER_TEMP/templates" "$HOME/.local/share/godot/export_templates/4.7.2.stable"
           unzip -q "$RUNNER_TEMP/templates.tpz" -d "$RUNNER_TEMP/templates"
-          cp "$RUNNER_TEMP/templates/templates/web_release.zip" "$HOME/.local/share/godot/export_templates/4.7.2.stable/"
+          template_dir="$HOME/.local/share/godot/export_templates/4.7.2.stable"
+          cp "$RUNNER_TEMP/templates/templates/web_nothreads_release.zip" "$template_dir/"
+          cp "$RUNNER_TEMP/templates/templates/web_nothreads_debug.zip" "$template_dir/"
 
       - name: Export browser build
         shell: bash
