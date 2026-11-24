@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>貨艙星箱配置｜視覺方向比較</title>
+<style>
+:root{color-scheme:dark;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:#10151d;color:#eef0ec}
+*{box-sizing:border-box}body{margin:0;padding:30px clamp(16px,3vw,48px) 42px;background:radial-gradient(ellipse at 50% 0,#273447 0,#10151d 56%)}
+h1{font-size:clamp(26px,3vw,38px);margin:0 0 8px}.intro{color:#c0cad2;margin:0 0 24px;line-height:1.65;max-width:950px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:18px;align-items:start}.card{border:1px solid #485463;border-radius:16px;background:#171f2a;overflow:hidden;box-shadow:0 14px 36px #0007}.caption{padding:15px 17px 17px}.caption h2{font-size:19px;margin:0 0 7px}.caption p{font-size:14px;line-height:1.55;color:#c4ccd2;margin:0 0 10px}.palette{font-size:12px;letter-spacing:.02em;color:#e6cc91}
+.scene{position:relative;aspect-ratio:16/9;overflow:hidden;isolation:isolate;color:var(--ink);background:var(--wall);}
+.scene:before{content:"";position:absolute;inset:0;z-index:-2;background:var(--wall-art)}.scene:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--texture)}
+.scene.gloom{--ink:#f4e7c4;--wall:#111c2b;--wall-art:radial-gradient(ellipse at 76% 46%,#b37a3d36 0 12%,transparent 38%),linear-gradient(180deg,#172435 0 68%,#29272a 68%);--texture:repeating-linear-gradient(90deg,transparent 0 12%,#050a1020 12.2% 12.6%),linear-gradient(180deg,#070b1466,transparent 36%,#06080b55);--panel:#1d2a38eF;--crate:#4d3a32;--edge:#8d6a4d;--accent:#e0ad58;--muted:#d5c8aa}
+.scene.paper{--ink:#29333a;--wall:#d9d0b8;--wall-art:radial-gradient(ellipse at 77% 42%,#f4c96a 0 10%,transparent 26%),linear-gradient(180deg,#d4e2d7 0 67%,#8b7d6b 67%);--texture:repeating-linear-gradient(0deg,transparent 0 18%,#705f4510 18.2% 18.6%);--panel:#f6eedbF2;--crate:#a66a42;--edge:#72482f;--accent:#287b73;--muted:#516069}
+.scene.beacon{--ink:#f3f8ff;--wall:#101d32;--wall-art:radial-gradient(ellipse at 78% 44%,#35cdd455 0 12%,transparent 34%),linear-gradient(180deg,#1a3151 0 68%,#202b3b 68%);--texture:linear-gradient(90deg,transparent 49.7%,#9fdcf010 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.7%,#9fdcf010 50%,transparent 50.3%);--panel:#132943F2;--crate:#25475b;--edge:#6bd4c8;--accent:#ffcf58;--muted:#c2d6e9}
+.top{position:absolute;left:3%;right:3%;top:4%;display:flex;justify-content:space-between;gap:8px;font-size:clamp(8px,1vw,13px);font-weight:700;color:var(--ink)}.brand{letter-spacing:.09em}.hud{color:var(--accent)}
+.prompt{position:absolute;left:4%;top:17%;width:39%;padding:3% 3.2%;border:1px solid var(--edge);border-radius:10px;background:var(--panel);box-shadow:0 5px 14px #0003}.prompt .tag{font-size:clamp(7px,.85vw,11px);color:var(--accent);font-weight:800}.prompt h3{font-size:clamp(11px,1.42vw,19px);line-height:1.35;margin:5px 0}.prompt p{font-size:clamp(8px,1vw,13px);line-height:1.45;margin:0;color:var(--muted)}
+.window{position:absolute;right:8%;top:17%;width:17%;height:27%;border:5px solid var(--edge);border-radius:48% 48% 8px 8px;background:linear-gradient(150deg,#405b75,#17283b 62%,#bc88474d);box-shadow:0 0 28px color-mix(in srgb,var(--accent) 28%,transparent)}.moon{position:absolute;width:20%;aspect-ratio:1;right:17%;top:17%;border-radius:50%;background:var(--accent);box-shadow:0 0 18px var(--accent)}
+.shelf{position:absolute;right:4%;top:47%;width:88%;height:4%;background:var(--edge);border-radius:4px;box-shadow:0 5px 0 #0004}.crates{position:absolute;right:5%;bottom:12%;width:86%;height:39%;display:flex;align-items:end;justify-content:space-around;gap:3%}.crate{position:relative;width:29%;height:88%;border:2px solid var(--edge);border-radius:8px 8px 4px 4px;background:linear-gradient(145deg,color-mix(in srgb,var(--crate) 87%,white),var(--crate));box-shadow:0 8px 0 #080b1066,inset 0 0 0 4px #0001;text-align:center;padding:5% 2% 2%}.crate:nth-child(2){height:100%}.crate-label{font-size:clamp(7px,.8vw,11px);font-weight:800;white-space:nowrap}.stars{color:var(--accent);font-size:clamp(10px,1.3vw,17px);line-height:1.35;letter-spacing:-.13em;text-shadow:0 1px 5px color-mix(in srgb,var(--accent) 50%,transparent);margin-top:7%}.count{font-size:clamp(8px,.9vw,12px);font-weight:800;display:block;margin-top:3%}.key{position:absolute;right:5%;bottom:4%;font-size:clamp(7px,.78vw,10px);color:var(--muted)}.table{position:absolute;left:0;right:0;bottom:0;height:12%;background:color-mix(in srgb,var(--crate) 62%,#141820);border-top:2px solid var(--edge)}
+.coat{position:absolute;left:43%;bottom:12%;width:6%;height:23%;background:var(--accent);clip-path:polygon(35% 0,65% 0,100% 100%,0 100%);filter:drop-shadow(0 3px 3px #0008)}.head{position:absolute;left:44.2%;bottom:33%;width:3.6%;aspect-ratio:1;border-radius:50%;background:var(--muted)}.lantern{position:absolute;left:41.7%;bottom:31%;width:8%;height:5%;border-radius:50%;background:#f6bf5d;box-shadow:0 0 14px #f6bf5daa}
+.paper .crate{border-radius:3px;box-shadow:4px 6px 0 #52452a44}.paper .prompt{border-radius:5px;box-shadow:3px 4px 0 #65584038}.paper .coat{clip-path:polygon(25% 0,75% 0,100% 100%,0 100%)}
+.beacon .prompt{border-width:2px;border-radius:5px}.beacon .crate{border-width:3px;border-radius:3px;box-shadow:0 0 0 2px #08111f,0 0 10px color-mix(in srgb,var(--edge) 32%,transparent)}.beacon .top{font-size:clamp(9px,1vw,14px)}.beacon .coat{border:1px solid #fff7}
+.scene-label{position:absolute;left:4%;bottom:4%;font-size:clamp(7px,.75vw,10px);color:var(--muted);letter-spacing:.04em}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.card{max-width:900px}.scene{font-size:16px}.prompt h3{font-size:clamp(17px,3vw,24px)}.prompt p{font-size:clamp(12px,2vw,16px)}.top,.scene-label,.key,.crate-label,.count{font-size:clamp(10px,1.8vw,14px)}.stars{font-size:clamp(17px,2.5vw,24px)}}
+</style>
+</head>
+<body>
+<h1>貨艙星箱配置｜視覺方向比較</h1>
+<p class="intro">三張方案使用相同關卡、題目、角色位置與星箱狀態。關卡狀態固定為：第二關尚未解題，10 枚星星目前集中在 A 箱 8 枚、B 箱 1 枚、C 箱 1 枚；鑰匙仍鎖住。每張圖只改變色彩、材質、光線與資訊呈現。</p>
+<main class="grid">
+  <article class="card" aria-labelledby="v1-title">
+    <div class="scene gloom">
+      <div class="top"><span class="brand">小小夢魔 · 霧港貨艙</span><span class="hud">第 2 關　得分 0 / 100　🔒 鑰匙</span></div>
+      <div class="prompt"><span class="tag">投資與風險</span><h3>把星星分散到不同店家，降低集中風險。</h3><p>目前 A 箱放了 8 枚，B、C 箱各放 1 枚。拖曳星星，再按「揭開天候牌」。</p></div>
+      <div class="window"><span class="moon"></span></div><span class="lantern"></span><span class="head"></span><span class="coat"></span><div class="shelf"></div>
+      <div class="crates"><div class="crate"><span class="crate-label">投資箱 A</span><span class="stars">★★★★<br>★★★★</span><b class="count">8 枚</b></div><div class="crate"><span class="crate-label">投資箱 B</span><span class="stars">★</span><b class="count">1 枚</b></div><div class="crate"><span class="crate-label">投資箱 C</span><span class="stars">★</span><b class="count">1 枚</b></div></div>
+      <div class="key">鑰匙：答對後取得</div><div class="table"></div><span class="scene-label">A　暗霧童話</span>
+    </div>
+    <div class="caption"><h2 id="v1-title">A｜暗霧童話</h2><p>延續昏暗冒險與暖色提燈，保留探索感；題目面板保持明亮，降低黑暗場景對閱讀的干擾。</p><div class="palette">深藍 × 舊木 × 提燈金｜氣氛優先</div></div>
+  </article>
+  <article class="card" aria-labelledby="v2-title">
+    <div class="scene paper">
+      <div class="top"><span class="brand">小小夢魔 · 霧港貨艙</span><span class="hud">第 2 關　得分 0 / 100　🔒 鑰匙</span></div>
+      <div class="prompt"><span class="tag">投資與風險</span><h3>把星星分散到不同店家，降低集中風險。</h3><p>目前 A 箱放了 8 枚，B、C 箱各放 1 枚。拖曳星星，再按「揭開天候牌」。</p></div>
+      <div class="window"><span class="moon"></span></div><span class="lantern"></span><span class="head"></span><span class="coat"></span><div class="shelf"></div>
+      <div class="crates"><div class="crate"><span class="crate-label">投資箱 A</span><span class="stars">★★★★<br>★★★★</span><b class="count">8 枚</b></div><div class="crate"><span class="crate-label">投資箱 B</span><span class="stars">★</span><b class="count">1 枚</b></div><div class="crate"><span class="crate-label">投資箱 C</span><span class="stars">★</span><b class="count">1 枚</b></div></div>
+      <div class="key">鑰匙：答對後取得</div><div class="table"></div><span class="scene-label">B　紙雕故事書</span>
+    </div>
+    <div class="caption"><h2 id="v2-title">B｜紙雕故事書</h2><p>以分層紙板與柔和色塊呈現貨艙，角色與道具更親切，較容易辨認可操作物件。</p><div class="palette">鼠尾草綠 × 紙卡其 × 磚橘｜親和優先</div></div>
+  </article>
+  <article class="card" aria-labelledby="v3-title">
+    <div class="scene beacon">
+      <div class="top"><span class="brand">小小夢魔 · 霧港貨艙</span><span class="hud">第 2 關　得分 0 / 100　🔒 鑰匙</span></div>
+      <div class="prompt"><span class="tag">投資與風險</span><h3>把星星分散到不同店家，降低集中風險。</h3><p>目前 A 箱放了 8 枚，B、C 箱各放 1 枚。拖曳星星，再按「揭開天候牌」。</p></div>
+      <div class="window"><span class="moon"></span></div><span class="lantern"></span><span class="head"></span><span class="coat"></span><div class="shelf"></div>
+      <div class="crates"><div class="crate"><span class="crate-label">投資箱 A</span><span class="stars">★★★★<br>★★★★</span><b class="count">8 枚</b></div><div class="crate"><span class="crate-label">投資箱 B</span><span class="stars">★</span><b class="count">1 枚</b></div><div class="crate"><span class="crate-label">投資箱 C</span><span class="stars">★</span><b class="count">1 枚</b></div></div>
+      <div class="key">鑰匙：答對後取得</div><div class="table"></div><span class="scene-label">C　霧光航標</span>
+    </div>
+    <div class="caption"><h2 id="v3-title">C｜霧光航標</h2><p>深色港灣搭配明確的青綠輪廓與金色重點；箱體邊界、可操作區和狀態標示最清楚。</p><div class="palette">海軍藍 × 霧光青 × 航標金｜辨識優先</div></div>
+  </article>
+</main>
+<p class="intro" style="margin-top:22px"><strong>共同設計條件：</strong>原創角色與場景；不使用 Little Nightmares 角色或場景素材；不加入倒數計時；三款均維持相同操作與題目。請選 A、B、C，或提出要調整的元素。</p>
+</body>
+</html>

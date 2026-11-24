@@ -1,0 +1,24 @@
+# Change Log
+
+## 0.4 — 可玩初版
+
+- 確認 `Game2` 工作區為版本來源，並已將可玩初版同步至使用者指定的 `C:\Godot` 專案資料夾。
+- 以原創貨艙場景實作已選玩法 D：先存再花配置與三商店分散投資配置；各關需通過條件才取得星鑰。
+- 加入 A/D、方向鍵與滑鼠場景移動、貨箱裝箱／取回、每關得分、錯誤提示與扣分、結尾成果及重新開始。
+- 改用 Godot GLTF API 載入 Blender GLB，避免首開依賴 Godot 匯入快取。
+- Godot 4.7.2 視窗實際走完兩關成功流程、錯誤提示／扣分、結尾與重啟；正式視覺方向仍待使用者選擇。
+- 增加 `啟動遊戲.bat` 與快速開始說明。
+
+## 0.3 — 玩法方向已選定
+
+- 使用者在玩法關卡選定 D「貨艙星箱配置」。
+- 開始準備三種相同狀態的視覺方案；尚未選定視覺前不修改正式遊戲內容。
+
+## 0.2 — Skills compliance recovery
+
+- Recorded the confirmed brief, teaching mode, learning-first/appropriate-challenge profile, assumptions, test plan, and open approvals.
+- Added an evidence-labelled, six-concept gameplay tournament with three design generations and separate G/P/D and R_edu scoring.
+- Added DT brief, decision log, change log, and requirement traceability artifacts.
+- Added the Blender-generated GLB to the source repository and ignored Godot's generated `.godot/` cache.
+- Fixed camera initialization order in the 3D prop viewport; Godot headless scene startup now completes without errors.
+- Kept the current build as a draft; no design selection or visual approval is recorded.

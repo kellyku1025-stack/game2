@@ -1,0 +1,9 @@
+# Godot generated/imported files
+.godot/
+
+# Blender caches and OS metadata
+*.blend1
+*.blend2
+Thumbs.db
+Desktop.ini
+*.log

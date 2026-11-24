@@ -1,0 +1,53 @@
+project_id: little-dream-finance
+mode: guided
+current_phase: prototype
+requirements_version: 0.2
+gate_status: playable_initial_build_ready_visual_direction_pending
+dt_handoff: pending
+sdlc_release: pending
+final_acceptance: pending
+confirmed:
+  - 小學生為目標對象；生活理財投資為教學主題。
+  - 遊戲包含兩關，每關一個互動單元，答題通過後取得鑰匙。
+  - 各關顯示得分，結尾顯示學習進步成果。
+  - 使用 Godot 與 Blender；使用者提供 Little Nightmares 作為氣氛參考。
+  - 教育優先 profile：Learning 50%, Appropriate challenge 25%, Engagement 15%, Motivation 10%（Learning-first preset）。
+  - Guessing/exploitation penalty strength is strong; cognitive-overload penalty strength is moderate.
+  - 玩法方向已由使用者選定：D「貨艙星箱配置」。
+  - 使用者要求持續製作直到可玩的初版完成；已授權製作垂直切片。
+assumptions:
+  - Windows 單人桌面版；短繁體中文文字；沒有計時壓力、真實金錢或交易。
+  - 預估遊玩時間 8–12 分鐘；實際時長待原型觀察。
+  - 不收集個人資料；任何兒童測試先取得監護人／機構同意。
+  - 將 strong/moderate 量化為 pG=0.25、pC=0.15；暫不設 G/C 硬性淘汰門檻，使用 review flags。
+open_questions:
+  - 正式視覺方向仍待選擇三種同內容方案之一（docs/visual-directions.html）；本初版先採原創草稿風格供試玩。
+  - 小學生年齡範圍尚未細分；目前按約 7–11 歲設計。
+  - GitHub 發布尚需 GitHub 寫入連線及有效提交作者身分。
+artifacts:
+  project_brief: docs/project-brief.md
+  design_tournament: docs/design-tournament.md
+  visual_directions: docs/visual-directions.html
+  decision_log: docs/decision-log.md
+  change_log: docs/change-log.md
+  traceability: docs/traceability.md
+  godot_project: project.godot
+  godot_project_install: C:/Godot/project.godot
+  game_launcher: 啟動遊戲.bat
+  blender_source: C:/blender/make_props.py
+  blender_model: blender/little_dream_props.blend
+  game_model: assets/little_dream_props.glb
+required_tests:
+  - 手動完成兩關流程、錯答提示、鑰匙解鎖、分數與結算畫面。
+  - 在視窗模式檢查 3D 道具位置、比例、中文顯示與互動覆蓋層。
+  - 對目標年齡進行有監護人／機構同意的可用性測試。
+passed_tests:
+  - Godot 4.7.2 headless 載入 main scene；最近一次檢查無遊戲腳本錯誤。
+  - Godot 4.7.2 視窗版啟動初版；實際操作第一關正確配置、第二關分散配置、取得鑰匙、總分與結尾成果，並確認可重新開始。
+  - 實際提交錯誤配置，確認提示、星鑰鎖定與每次扣 25 分（100 降至 75）；星幣未分完時改為不扣分提醒。
+  - Blender 5.2.4 LTS 腳本成功輸出 BLEND 與 GLB；遊戲透過 Godot GLTF API 載入模型，視窗中可見 3D 道具預覽。
+known_limitations:
+  - 目前是可玩初版，非最終驗收版本；正式視覺方案仍待使用者選擇。
+  - 尚無玩家證據；設計評分均為 AI pre-score，不代表學習成效。
+  - Blender Toolkit addon 未安裝；目前模型由 Blender Python 腳本生成。
+  - 尚未推送至 GitHub。
