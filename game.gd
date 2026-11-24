@@ -1,43 +1,52 @@
 extends Node2D
 
-const TOTALS := [10, 12]
-const BOX_NAMES := [
-	["儲蓄箱", "生活需要", "想要的東西"],
-	["星港商店", "月光農場", "雲端工坊"]
+const STAGE_TITLES := ["理財配置桌", "上學購物", "理財紅綠燈", "突發支出情境"]
+const BUDGET_CATEGORIES := ["需要", "想要", "儲蓄", "投資"]
+const SHOP_ITEMS := [
+	{"store":"早餐店", "name":"飯糰早餐", "kind":"需要", "why":"早餐補充上課體力；先確認有沒有吃早餐的需求。"},
+	{"store":"早餐店", "name":"加料豪華套餐", "kind":"想要", "why":"基本早餐已足夠時，額外加料屬於想要，可以比較價差再決定。"},
+	{"store":"早餐店", "name":"瓶裝飲料", "kind":"想要", "why":"若能帶水壺或喝白開水，這瓶飲料通常不是必要支出。"},
+	{"store":"便利商店", "name":"明天要交的筆記本", "kind":"需要", "why":"課堂作業必需而手邊沒有替代品時，這是學習需要。"},
+	{"store":"便利商店", "name":"限量盲盒", "kind":"想要", "why":"限量促銷會讓人著急，但收藏品不是完成學校任務的必要支出。"},
+	{"store":"便利商店", "name":"第二份零食", "kind":"想要", "why":"已經有點心時，多買一份可以先想一想是否真的需要。"},
+	{"store":"傳統雜貨店", "name":"家裡指定的雞蛋", "kind":"需要", "why":"依照家人交代購買日常食材，是生活中的實際需要。"},
+	{"store":"傳統雜貨店", "name":"替換用文具", "kind":"需要", "why":"原本的文具用完且課堂需要時，購買平價替用品很合理。"},
+	{"store":"傳統雜貨店", "name":"新款造型貼紙", "kind":"想要", "why":"已有可用的貼紙時，新款主要帶來喜好與新鮮感，屬於想要。"}
 ]
-const LESSON_TITLES := ["第一關｜先存再花", "第二關｜分散投資"]
-const LESSON_PROMPTS := [
-	"把 10 枚星幣裝進三個貨箱。先照顧生活需要、留下一些儲蓄，再安排想要的東西。",
-	"把 12 枚星幣分到三家不同商店。每家最多放 6 枚，分散配置可以降低單一商店出問題的影響。"
+const TRAFFIC_QUESTIONS := [
+	{"situation":"同學分享一款流行耳機，今天下單才有折扣；你的耳機仍能正常使用。", "answer":"想一想", "why":"先比較價格、品質與預算，折扣不代表現在一定要買。"},
+	{"situation":"下週要交報告，你的筆記本已經寫滿，家中也沒有可替代的紙本。", "answer":"立刻買", "why":"這是近期明確的學習需要，選擇符合預算的款式即可。"},
+	{"situation":"你想買一款較貴的遊戲，零用錢還不夠，生日也在兩個月後。", "answer":"先存錢", "why":"先訂目標、分次存下來，不借錢也不挪用必要支出。"},
+	{"situation":"看到限時貼文說球鞋只剩最後一雙，但你已有一雙合腳、堪用的鞋。", "answer":"想一想", "why":"倒數訊息會增加衝動；先離開頁面並檢查需求與預算。"},
+	{"situation":"明天校外教學要搭車，老師通知需自備車資，你目前還沒準備。", "answer":"立刻買", "why":"已知且必要的交通費應先安排，並確認金額和安全保管方式。"},
+	{"situation":"你想買新出的漫畫整套，手上存款還有其他已約好的用途。", "answer":"先存錢", "why":"先保留已承諾的用途，再為漫畫設定存錢目標與期限。"}
 ]
-const LESSON_RULES := [
-	"通關條件：總數剛好 10 枚；生活需要至少 5 枚、儲蓄至少 3 枚、想要的東西不超過 2 枚。",
-	"通關條件：總數剛好 12 枚；至少分給 2 家商店，而且每家不超過 6 枚。"
-]
-const WRONG_HINTS := [
-	"先檢查總數，再確保需要與儲蓄有足夠星幣，最後才安排想要的東西。",
-	"試著把星幣分到至少兩家商店；每一家都不要超過 6 枚。"
-]
+const EMERGENCY_SITUATION := "校外教學前一天，眼鏡不小心摔壞，修理需要 600 元。你有 1,000 元零用錢：其中 500 元是預計買球鞋的儲蓄，200 元是下週交通費，300 元是緊急預備金。"
+const EMERGENCY_CHOICES := ["先用 300 元預備金，再和家人討論其餘 300 元", "把下週交通費和所有儲蓄都花掉", "先買球鞋，眼鏡等下個月再處理"]
+const EMERGENCY_ANSWER := 0
+const EMERGENCY_WHY := "眼鏡影響上課與安全，屬於優先處理的必要支出。先動用預備金、說明差額並和可信任的大人討論；保留交通等已安排用途，也重新規劃球鞋目標。"
 
 var stage := 0
 var player_x := 130.0
 var active := false
 var finished := false
-var solved := [false, false]
-var scores := [0, 0]
-var mistakes := [0, 0]
-var allocations := [[0, 0, 0], [0, 0, 0]]
-var notice := "用 A / D 或方向鍵走到發光貨桌旁，按 E 開始配置。"
+var solved := [false, false, false, false]
+var scores := [0, 0, 0, 0]
+var mistakes := [0, 0, 0, 0]
+var budget := [0, 0, 0, 0]
+var shopping_index := 0
+var traffic_index := 0
+var notice := "走到互動桌旁按 E 開始，或按左下角按鈕前往。"
 var notice_time := 10.0
 
 var hud: VBoxContainer
 var overlay: ColorRect
 var panel: PanelContainer
 var lesson_box: VBoxContainer
-var allocation_labels: Array[Label] = []
-var total_label: Label
 var feedback_label: Label
-var submit_button: Button
+var action_button: Button
+var choice_box: VBoxContainer
+var score_labels: Array[Label] = []
 var notice_label: Label
 var travel_button: Button
 var prop_view: SubViewport
@@ -166,7 +175,7 @@ func _build_ui() -> void:
 	travel_button.theme = paper_theme
 	travel_button.position = Vector2(28, 650)
 	travel_button.size = Vector2(230, 46)
-	travel_button.text = "前往發光貨桌"
+	travel_button.text = "前往理財互動桌"
 	travel_button.pressed.connect(_on_travel_pressed)
 	layer.add_child(travel_button)
 	overlay = ColorRect.new()
@@ -177,8 +186,8 @@ func _build_ui() -> void:
 	panel = PanelContainer.new()
 	panel.theme = paper_theme
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.position = Vector2(-365, -285)
-	panel.size = Vector2(730, 570)
+	panel.position = Vector2(-410, -290)
+	panel.size = Vector2(820, 580)
 	panel.add_theme_stylebox_override("panel", _paper_style(Color("f5ecd8"), Color("a66a42"), 5, 10))
 	panel.visible = false
 	layer.add_child(panel)
@@ -247,13 +256,15 @@ func _add_model_preview(layer: CanvasLayer) -> void:
 func refresh_hud() -> void:
 	if not is_instance_valid(hud): return
 	for child in hud.get_children(): child.queue_free()
-	var level_name := "儲蓄規劃" if stage == 0 else "投資與風險"
+	var level_name: String = STAGE_TITLES[stage]
 	var key_text := "已取得" if solved[stage] else "尚未取得"
+	var total_score := 0
+	for score in scores: total_score += score
 	var rows := [
-		"小小夢魔｜星港理財迷航",
-		"第 %d / 2 關　%s" % [stage + 1, level_name],
-		"本關 %d 分　｜　總分 %d / 200　｜　本關星鑰：%s" % [scores[stage], scores[0] + scores[1], key_text],
-		"A / D 或 ← / → 移動　　靠近貨桌按 E 配置星幣"
+		"小小夢魔｜國中生生活理財任務",
+		"單元 %d / 4　%s" % [stage + 1, level_name],
+		"本單元 %d 分　｜　累計 %d / 400　｜　本單元星鑰：%s" % [scores[stage], total_score, key_text],
+		"A / D 或方向鍵移動　　完成互動取得星鑰"
 	]
 	for i in rows.size():
 		var label := Label.new()
@@ -264,18 +275,17 @@ func refresh_hud() -> void:
 	if is_instance_valid(notice_label):
 		notice_label.text = notice if notice_time > 0.0 else ""
 	if is_instance_valid(travel_button):
-		travel_button.text = "前往發光貨桌" if not solved[stage] else ("前往第二關" if stage == 0 else "查看成長紀錄")
+		travel_button.text = "前往理財互動桌" if not solved[stage] else ("前往下一單元" if stage < 3 else "查看成長紀錄")
 
 func open_interaction() -> void:
 	if solved[stage]:
-		set_notice("星鑰已到手，往右邊艙門前進！")
+		set_notice("本單元星鑰已取得，按左下角按鈕繼續！")
 		return
 	active = true
 	travel_button.visible = false
 	overlay.visible = true
 	_build_lesson_panel()
 	panel.visible = true
-	refresh_allocation_display()
 
 func _build_lesson_panel() -> void:
 	for child in panel.get_children(): child.queue_free()
@@ -284,131 +294,236 @@ func _build_lesson_panel() -> void:
 	lesson_box.add_theme_constant_override("separation", 11)
 	panel.add_child(lesson_box)
 	var title := Label.new()
-	title.text = LESSON_TITLES[stage]
+	title.text = "單元 %d｜%s" % [stage + 1, STAGE_TITLES[stage]]
 	title.add_theme_font_size_override("font_size", 27)
 	title.add_theme_color_override("font_color", Color("a35435"))
 	lesson_box.add_child(title)
 	var prompt := Label.new()
-	prompt.text = LESSON_PROMPTS[stage]
+	prompt.text = [
+		"請把 100% 的每月零用錢分配到四類。想想近期生活、想買的物品、未來目標，以及投資可能有損失。",
+		"依序逛早餐店、便利商店、傳統雜貨店。每件商品請判斷是「需要」或「想要」，結帳後會看到理由。",
+		"閱讀 6 個生活情境，選擇「立刻買」、「想一想」或「先存錢」。每題選完會說明判斷線索。",
+		EMERGENCY_SITUATION
+	][stage]
 	prompt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	prompt.custom_minimum_size.x = 680
+	prompt.custom_minimum_size.x = 770
 	lesson_box.add_child(prompt)
-	var rule := Label.new()
-	rule.text = LESSON_RULES[stage]
-	rule.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	rule.add_theme_color_override("font_color", Color("52665b"))
-	lesson_box.add_child(rule)
-	total_label = Label.new()
-	total_label.add_theme_font_size_override("font_size", 20)
-	total_label.add_theme_color_override("font_color", Color("718f78"))
-	lesson_box.add_child(total_label)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 12)
-	lesson_box.add_child(row)
-	allocation_labels.clear()
-	for index in range(3):
-		var card := PanelContainer.new()
-		card.theme = panel.theme
-		card.add_theme_stylebox_override("panel", _paper_style(Color("eee3ca"), Color("91a78d"), 2, 5))
-		card.custom_minimum_size = Vector2(215, 145)
-		row.add_child(card)
-		var column := VBoxContainer.new()
-		column.alignment = BoxContainer.ALIGNMENT_CENTER
-		column.add_theme_constant_override("separation", 8)
-		card.add_child(column)
-		var name_label := Label.new()
-		name_label.text = BOX_NAMES[stage][index]
-		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		column.add_child(name_label)
-		var count_label := Label.new()
-		count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		count_label.add_theme_font_size_override("font_size", 26)
-		column.add_child(count_label)
-		allocation_labels.append(count_label)
-		var controls := HBoxContainer.new()
-		controls.alignment = BoxContainer.ALIGNMENT_CENTER
-		column.add_child(controls)
-		var minus := Button.new()
-		minus.text = "−　取回"
-		minus.custom_minimum_size = Vector2(94, 38)
-		minus.pressed.connect(_change_allocation.bind(index, -1))
-		controls.add_child(minus)
-		var plus := Button.new()
-		plus.text = "+　裝箱"
-		plus.custom_minimum_size = Vector2(94, 38)
-		plus.pressed.connect(_change_allocation.bind(index, 1))
-		controls.add_child(plus)
 	feedback_label = Label.new()
-	feedback_label.text = "選擇每個貨箱的星幣數量，再按「確認配置」。"
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	feedback_label.custom_minimum_size.y = 40
+	feedback_label.custom_minimum_size.y = 50
 	lesson_box.add_child(feedback_label)
-	submit_button = Button.new()
-	submit_button.text = "確認配置，挑戰通關"
-	submit_button.custom_minimum_size = Vector2(680, 48)
-	submit_button.pressed.connect(_submit_allocation)
-	lesson_box.add_child(submit_button)
+	choice_box = VBoxContainer.new()
+	choice_box.add_theme_constant_override("separation", 7)
+	lesson_box.add_child(choice_box)
+	action_button = Button.new()
+	action_button.custom_minimum_size = Vector2(770, 44)
+	lesson_box.add_child(action_button)
 	var cancel := Button.new()
-	cancel.text = "先離開貨桌"
+	cancel.text = "暫停，稍後繼續"
 	cancel.pressed.connect(_close_panel)
 	lesson_box.add_child(cancel)
+	match stage:
+		0: _build_budget_task()
+		1: _build_shopping_task()
+		2: _build_traffic_task()
+		3: _build_emergency_task()
 
-func _change_allocation(index: int, amount: int) -> void:
-	var next_value: int = allocations[stage][index] + amount
-	if next_value < 0 or _allocated_total() + amount > TOTALS[stage]: return
-	allocations[stage][index] = next_value
-	feedback_label.text = "配置可以調整。確認前先看看總數與每個貨箱的規則。"
-	refresh_allocation_display()
+func _build_budget_task() -> void:
+	var guidance := Label.new()
+	guidance.text = "參考範圍：需要 35–60%｜想要 0–25%｜儲蓄至少 15%｜投資 5–25%。投資有風險，不保證獲利；配置不只一種答案。"
+	guidance.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lesson_box.add_child(guidance)
+	for index in range(BUDGET_CATEGORIES.size()):
+		var row := HBoxContainer.new()
+		lesson_box.add_child(row)
+		var label := Label.new()
+		label.text = BUDGET_CATEGORIES[index]
+		label.custom_minimum_size.x = 100
+		row.add_child(label)
+		var slider := HSlider.new()
+		slider.min_value = 0
+		slider.max_value = 100
+		slider.step = 5
+		slider.value = budget[index]
+		slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		slider.value_changed.connect(_set_budget.bind(index))
+		row.add_child(slider)
+		var value_label := Label.new()
+		value_label.name = "BudgetValue%d" % index
+		value_label.text = "%d%%" % budget[index]
+		value_label.custom_minimum_size.x = 60
+		row.add_child(value_label)
+	feedback_label.text = "目前配置合計 %d%%。可拖動滑桿調整。" % _budget_total()
+	action_button.text = "檢查我的配置"
+	action_button.pressed.connect(_check_budget)
 
-func _allocated_total() -> int:
-	var sum := 0
-	for value in allocations[stage]: sum += value
-	return sum
+func _set_budget(value: float, index: int) -> void:
+	budget[index] = int(value)
+	var value_label := lesson_box.find_child("BudgetValue%d" % index, true, false) as Label
+	if value_label: value_label.text = "%d%%" % budget[index]
+	feedback_label.text = "目前配置合計 %d%%，請把每一部分安排好。" % _budget_total()
 
-func refresh_allocation_display() -> void:
-	if not is_instance_valid(total_label): return
-	total_label.text = "已裝箱 %d / %d 枚星幣" % [_allocated_total(), TOTALS[stage]]
-	for i in range(allocation_labels.size()):
-		allocation_labels[i].text = "%d 枚星幣" % allocations[stage][i]
+func _budget_total() -> int:
+	var total := 0
+	for amount in budget: total += amount
+	return total
 
-func _submit_allocation() -> void:
-	if _allocated_total() != TOTALS[stage]:
-		feedback_label.text = "星幣總數還不正確，請補齊或取回後再確認。這次調整不扣分。"
-		feedback_label.add_theme_color_override("font_color", Color("a35435"))
+func _check_budget() -> void:
+	if _budget_total() != 100:
+		feedback_label.text = "目前合計 %d%%，請調整到剛好 100%%。這是檢查提醒，不扣分。" % _budget_total()
 		return
-	var valid := false
-	if stage == 0:
-		var saved: int = allocations[0][0]
-		var needs: int = allocations[0][1]
-		var wants: int = allocations[0][2]
-		valid = saved >= 3 and needs >= 5 and wants <= 2
-	else:
-		var used_boxes := 0
-		for amount in allocations[1]:
-			if amount > 0: used_boxes += 1
-			if amount > 6: valid = false
-		valid = used_boxes >= 2
-		for amount in allocations[1]:
-			if amount > 6: valid = false
+	var valid: bool = budget[0] >= 35 and budget[0] <= 60 and budget[1] <= 25 and budget[2] >= 15 and budget[3] >= 5 and budget[3] <= 25
 	if not valid:
-		_mistake(WRONG_HINTS[stage], "這個配置還不能取得星鑰。讀一讀條件，調整貨箱後再試。")
+		_mistake("先保留基本生活需要與儲蓄，再看想要與投資是否落在參考範圍。投資可能虧損，請勿把所有錢放在同一處。")
 		return
-	solved[stage] = true
-	scores[stage] = maxi(40, 100 - mistakes[stage] * 25)
-	_close_panel()
+	feedback_label.text = "配置合計 100%，四個部分都顧到了。儲蓄較適合短期目標；投資要了解風險與時間。"
+	_finish_stage()
+
+func _build_shopping_task() -> void:
+	shopping_index = 0
+	_render_shopping_item()
+
+func _render_shopping_item() -> void:
+	for child in choice_box.get_children(): child.queue_free()
+	action_button.visible = false
+	var item: Dictionary = SHOP_ITEMS[shopping_index]
+	var counter := Label.new()
+	counter.text = "%s｜商品 %d / %d" % [item.store, shopping_index + 1, SHOP_ITEMS.size()]
+	counter.add_theme_font_size_override("font_size", 21)
+	choice_box.add_child(counter)
+	var name_label := Label.new()
+	name_label.text = item.name
+	name_label.add_theme_font_size_override("font_size", 25)
+	choice_box.add_child(name_label)
+	feedback_label.text = "想一想：這項商品是生活或學習所需，還是主要滿足喜好？"
+	for kind in ["需要", "想要"]:
+		var button := Button.new()
+		button.text = kind
+		button.custom_minimum_size.y = 42
+		button.pressed.connect(_answer_shopping.bind(kind))
+		choice_box.add_child(button)
+
+func _answer_shopping(choice: String) -> void:
+	var item: Dictionary = SHOP_ITEMS[shopping_index]
+	var correct: bool = choice == item.kind
+	if not correct: _record_mistake()
+	feedback_label.text = "%s：%s。%s%s" % ["判斷正確" if correct else "這次分類不同", item.kind, item.why, "　調整本次得分後繼續。" if not correct else ""]
+	for child in choice_box.get_children():
+		if child is Button: child.disabled = true
+	action_button.text = "下一項商品" if shopping_index < SHOP_ITEMS.size() - 1 else "完成購物任務"
+	action_button.visible = true
+	if not action_button.pressed.is_connected(_next_shopping_item): action_button.pressed.connect(_next_shopping_item)
+
+func _next_shopping_item() -> void:
+	if shopping_index < SHOP_ITEMS.size() - 1:
+		shopping_index += 1
+		_render_shopping_item()
+	else:
+		feedback_label.text = "三間店都逛完了。結帳時先分辨必需與喜好，能讓預算更清楚。"
+		_finish_stage()
+
+func _build_traffic_task() -> void:
+	traffic_index = 0
+	_render_traffic_question()
+
+func _render_traffic_question() -> void:
+	for child in choice_box.get_children(): child.queue_free()
+	action_button.visible = false
+	var q: Dictionary = TRAFFIC_QUESTIONS[traffic_index]
+	var count := Label.new()
+	count.text = "情境 %d / %d" % [traffic_index + 1, TRAFFIC_QUESTIONS.size()]
+	count.add_theme_font_size_override("font_size", 21)
+	choice_box.add_child(count)
+	var situation := Label.new()
+	situation.text = q.situation
+	situation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	choice_box.add_child(situation)
+	feedback_label.text = "你會怎麼做？先讀預算、需要程度和時間線索。"
+	for choice in ["立刻買", "想一想", "先存錢"]:
+		var button := Button.new()
+		button.text = choice
+		button.custom_minimum_size.y = 38
+		button.pressed.connect(_answer_traffic.bind(choice))
+		choice_box.add_child(button)
+
+func _answer_traffic(choice: String) -> void:
+	var q: Dictionary = TRAFFIC_QUESTIONS[traffic_index]
+	var correct: bool = choice == q.answer
+	if not correct: _record_mistake()
+	feedback_label.text = "%s；建議「%s」。%s%s" % ["判斷合適" if correct else "可以再想想", q.answer, q.why, "　我們一起看判斷線索。" if not correct else ""]
+	for child in choice_box.get_children():
+		if child is Button: child.disabled = true
+	action_button.text = "下一個情境" if traffic_index < TRAFFIC_QUESTIONS.size() - 1 else "完成六個情境"
+	action_button.visible = true
+	if not action_button.pressed.is_connected(_next_traffic_question): action_button.pressed.connect(_next_traffic_question)
+
+func _next_traffic_question() -> void:
+	if traffic_index < TRAFFIC_QUESTIONS.size() - 1:
+		traffic_index += 1
+		_render_traffic_question()
+	else:
+		feedback_label.text = "六個情境都完成了。促銷、同儕流行和倒數訊息，都值得多看一步。"
+		_finish_stage()
+
+func _build_emergency_task() -> void:
+	for index in range(EMERGENCY_CHOICES.size()):
+		var button := Button.new()
+		button.text = EMERGENCY_CHOICES[index]
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		button.custom_minimum_size.y = 50
+		button.pressed.connect(_answer_emergency.bind(index))
+		choice_box.add_child(button)
+	feedback_label.text = "選擇處理方式，想想急用金、已安排用途與求助對象。"
+
+func _answer_emergency(choice: int) -> void:
+	var correct: bool = choice == EMERGENCY_ANSWER
+	if not correct:
+		_record_mistake()
+		feedback_label.text = "先停一下：眼鏡會影響上課與安全。%s" % EMERGENCY_WHY
+		return
+	feedback_label.text = "這個處理順序兼顧安全與原有計畫。%s" % EMERGENCY_WHY
+	_finish_stage()
+
+func _record_mistake() -> void:
+	mistakes[stage] += 1
+	scores[stage] = maxi(0, 100 - mistakes[stage] * 10)
 	refresh_hud()
-	set_notice("配置穩當！你取得本關星鑰。往右邊艙門前進！")
-	if stage == 1:
-		set_notice("分散配置成功！第二把星鑰入手，前往出口查看成長紀錄。")
+
+func _mistake(hint: String) -> void:
+	_record_mistake()
+	feedback_label.text = "配置還可再調整。%s\n本單元目前得分：%d" % [hint, scores[stage]]
+	feedback_label.add_theme_color_override("font_color", Color("a35435"))
+
+func _finish_stage() -> void:
+	solved[stage] = true
+	scores[stage] = maxi(0, 100 - mistakes[stage] * 10)
+	if stage == 0 and action_button.pressed.is_connected(_check_budget): action_button.pressed.disconnect(_check_budget)
+	if stage == 1 and action_button.pressed.is_connected(_next_shopping_item): action_button.pressed.disconnect(_next_shopping_item)
+	if stage == 2 and action_button.pressed.is_connected(_next_traffic_question): action_button.pressed.disconnect(_next_traffic_question)
+	for child in choice_box.get_children():
+		if child is Button: child.disabled = true
+	if stage == 0:
+		for child in lesson_box.get_children():
+			if child is HBoxContainer:
+				for control in child.get_children():
+					if control is HSlider: control.editable = false
+	if not action_button.pressed.is_connected(_advance_or_end): action_button.pressed.connect(_advance_or_end)
+	action_button.text = "取得星鑰，前往下一單元" if stage < 3 else "查看理財成長成果"
+	action_button.visible = true
+	feedback_label.add_theme_color_override("font_color", Color("52665b"))
+	feedback_label.text += "\n取得本單元星鑰！本單元得分 %d / 100。" % scores[stage]
+	refresh_hud()
 	queue_redraw()
 
-func _mistake(hint: String, message: String) -> void:
-	mistakes[stage] += 1
-	scores[stage] = maxi(40, 100 - mistakes[stage] * 25)
-	feedback_label.text = "%s\n提示：%s\n本關目前得分：%d" % [message, hint, scores[stage]]
-	feedback_label.add_theme_color_override("font_color", Color("a35435"))
-	refresh_hud()
+func _advance_or_end() -> void:
+	if stage < 3:
+		stage += 1
+		_close_panel()
+		set_notice("星鑰已解鎖下一個理財單元，按按鈕或走到互動桌開始。")
+		refresh_hud()
+		queue_redraw()
+	else:
+		show_ending()
 
 func _close_panel() -> void:
 	active = false
@@ -416,10 +531,9 @@ func _close_panel() -> void:
 	panel.visible = false
 	if is_instance_valid(travel_button): travel_button.visible = true
 	for child in panel.get_children(): child.queue_free()
-	allocation_labels.clear()
-	total_label = null
+	choice_box = null
 	feedback_label = null
-	submit_button = null
+	action_button = null
 
 func set_notice(message: String) -> void:
 	notice = message
@@ -435,14 +549,7 @@ func _on_travel_pressed() -> void:
 	_travel_forward()
 
 func _travel_forward() -> void:
-	if stage == 0:
-		stage = 1
-		player_x = 75.0
-		set_notice("鑰匙打開了下一個貨艙！配置第二關的星幣。")
-		refresh_hud()
-		queue_redraw()
-	else:
-		show_ending()
+	if solved[stage]: _advance_or_end()
 
 func show_ending() -> void:
 	finished = true
@@ -460,7 +567,9 @@ func show_ending() -> void:
 	title.add_theme_color_override("font_color", Color("a35435"))
 	result.add_child(title)
 	var details := Label.new()
-	details.text = "第一關｜儲蓄規劃：%d / 100\n第二關｜分散投資：%d / 100\n總分：%d / 200\n\n學習進度：完成 2 / 2 個互動單元\n\n你練習先滿足需要、保留儲蓄，再把投資分散到不同選項。每次調整配置，都是讓未來更穩健的一小步。" % [scores[0], scores[1], scores[0] + scores[1]]
+	var total_score := 0
+	for score in scores: total_score += score
+	details.text = "理財配置桌：%d / 100\n上學購物：%d / 100\n理財紅綠燈：%d / 100\n突發支出：%d / 100\n總分：%d / 400\n\n學習進度：完成 %d / 4 個單元\n\n你練習規劃需要、想要、儲蓄與投資，辨認購物分類，延後衝動消費，並在突發支出時先顧安全、運用預備金和尋求可信任的大人協助。" % [scores[0], scores[1], scores[2], scores[3], total_score, solved.count(true)]
 	details.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	result.add_child(details)
 	var again := Button.new()
@@ -479,8 +588,10 @@ func _restart() -> void:
 	solved = [false, false]
 	scores = [0, 0]
 	mistakes = [0, 0]
-	allocations = [[0, 0, 0], [0, 0, 0]]
+	budget = [45, 15, 25, 15]
+	shopping_index = 0
+	traffic_index = 0
 	_close_panel()
-	set_notice("用 A / D 或方向鍵走到發光貨桌旁，按 E 開始配置。")
+	set_notice("走到互動桌旁按 E 開始，或按左下角按鈕前往。")
 	refresh_hud()
 	queue_redraw()

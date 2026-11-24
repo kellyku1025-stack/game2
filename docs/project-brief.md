@@ -1,14 +1,14 @@
 # 小小夢魔：理財迷航 — Project Brief
 
-Status: draft
+Status: approved requirement change; revised prototype pending verification
 
 ## Goal
 
-Create an original, child-friendly financial-literacy adventure that teaches elementary learners to plan spending and savings, then recognize investment risk and diversification.
+Create an original financial-literacy adventure for junior-high learners that practices budgeting, purchase decisions, saving, and handling an unexpected expense.
 
 ## Target users and context
 
-- Elementary-school children; provisional design band: approximately ages 7–11.
+- Junior-high students; provisional design band: approximately ages 12–15.
 - Windows desktop, single-player, short sessions.
 - Traditional Chinese UI; classroom or home learning context.
 
@@ -26,9 +26,9 @@ Elementary learners need a low-pressure way to practice distinguishing planned s
 
 ## Inputs, processing, and outputs
 
-- Input: movement, one lesson decision per level, and optional retries.
-- Processing: deterministic answer checking; award a key only after the correct answer; calculate level and total scores.
-- Output: immediate explanatory feedback, two level scores, and a completion summary showing the two learning units completed.
+- Input: movement, budget percentages, need/want classifications, six spending decisions, and one unexpected-expense decision.
+- Processing: deterministic answer checking; award each unit's key only when its task is complete; deduct 10 points for each incorrect choice; incomplete budget totals are correctable without penalty.
+- Output: immediate explanation after each shopping and traffic-light choice, four unit scores, a total out of 400, and a final progress summary.
 
 ## AI role and authority
 
@@ -36,13 +36,13 @@ No AI runs in the game. Game rules, scoring, answers, and progression are determ
 
 ## MVP and non-goals
 
-MVP: exactly two levels; one financial-literacy interaction per level; answer-gated keys; level scores; final progress summary; original atmospheric visuals; Blender-made 3D props.
+MVP: four sequential interactions: (1) allocate a budget among needs, wants, savings, and investment; (2) classify items at a breakfast shop, convenience store, and traditional grocery; (3) make six traffic-light spending decisions; (4) respond to an unexpected expense. Each unit has a score and answer-gated key; the ending shows progress across all four units. Retain original paper-cut storybook visuals and Blender-made 3D props.
 
 Non-goals: real money, real investment recommendations, online accounts, student data collection, multiplayer, horror violence, or copying Little Nightmares characters or locations.
 
 ## Constraints and risks
 
-- Keep reading load and controls suitable for children.
+- Keep reading load and controls suitable for junior-high students.
 - Do not frame an investment as guaranteed or risk-free.
 - Do not use timers or randomized payouts that reward guessing unless approved by the design gate.
 - No identifiable child data; obtain required guardian/institutional approval before any playtest.
@@ -54,9 +54,10 @@ Windows desktop Godot project with a browser build published through GitHub Page
 
 ## Success measures
 
-- A first-time learner can move and find the interaction without adult explanation.
-- Each level has exactly one lesson interaction and awards its key only after a correct answer.
-- Per-level scores and the final progress summary are visible and consistent.
+- A first-time learner can move and find each interaction without adult explanation.
+- The four activities appear in the requested sequence and explain shopping classifications after each checkout.
+- The six traffic-light situations offer the three requested options.
+- Each completed unit awards its key; scores and the final 4/4 progress summary are visible and consistent.
 - Learners can explain, in their own words, why the selected saving/spending or risk choice is appropriate.
 - Any future learning claim is supported by an approved pre/post measure, not an AI score.
 
@@ -75,7 +76,7 @@ Windows desktop Godot project with a browser build published through GitHub Page
 
 ## Open questions
 
-- Exact age band and classroom time allocation.
+- Grade-specific teacher review, classroom time allocation, and whether the proposed budget percentages need adjustment for local curriculum.
 - Child/teacher usability evidence and final acceptance.
 
 ## User approval

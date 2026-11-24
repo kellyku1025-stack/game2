@@ -1,15 +1,15 @@
 project_id: little-dream-finance
 mode: guided
-current_phase: web-deployed
-requirements_version: 0.2
-gate_status: visual_direction_b_web_deployed_player_review_pending
+current_phase: build
+requirements_version: 0.3
+gate_status: four_unit_junior_high_revision_in_progress
 dt_handoff: pending
 sdlc_release: web_prototype_published
 final_acceptance: pending
 confirmed:
-  - 小學生為目標對象；生活理財投資為教學主題。
-  - 遊戲包含兩關，每關一個互動單元，答題通過後取得鑰匙。
-  - 各關顯示得分，結尾顯示學習進步成果。
+  - 國中生為目標對象；生活理財投資為教學主題。
+  - 遊戲依序包含四個互動單元：需要／想要／儲蓄／投資配置、三店購物分類、六題理財紅綠燈、突發支出決策。
+  - 每單元顯示得分；完成互動取得星鑰；結尾顯示四單元成績及學習進步成果。
   - 使用 Godot 與 Blender；使用者提供 Little Nightmares 作為氣氛參考。
   - 教育優先 profile：Learning 50%, Appropriate challenge 25%, Engagement 15%, Motivation 10%（Learning-first preset）。
   - Guessing/exploitation penalty strength is strong; cognitive-overload penalty strength is moderate.
@@ -18,12 +18,14 @@ confirmed:
   - 使用者要求部署瀏覽器版至 GitHub Pages（GitHub.io）。
   - 使用者要求持續製作直到可玩的初版完成；已授權製作垂直切片。
 assumptions:
-  - Windows 單人桌面版；短繁體中文文字；沒有計時壓力、真實金錢或交易。
-  - 預估遊玩時間 8–12 分鐘；實際時長待原型觀察。
+  - Windows 單人桌面版；繁體中文；沒有計時壓力、真實金錢或交易。
+  - 以 12–15 歲國中生為暫定年齡帶；預估遊玩時間 10–15 分鐘，待原型觀察。
+  - 預算關卡的參考範圍為需要 35–60%、想要最多 25%、儲蓄至少 15%、投資 5–25%；這些是教學情境規則，不是個人理財建議。
+  - 每次錯誤扣 10 分；配置合計未達 100% 是可修正提醒，不扣分。
   - 不收集個人資料；任何兒童測試先取得監護人／機構同意。
   - 將 strong/moderate 量化為 pG=0.25、pC=0.15；暫不設 G/C 硬性淘汰門檻，使用 review flags。
 open_questions:
-  - 小學生年齡範圍尚未細分；目前按約 7–11 歲設計。
+  - 國中不同年級的零用錢、消費經驗和課程用語仍需教師檢視。
 artifacts:
   project_brief: docs/project-brief.md
   design_tournament: docs/design-tournament.md
@@ -42,7 +44,7 @@ artifacts:
   github_repository: https://github.com/kellyku1025-stack/game2
   github_initial_build_commit: e1b9332
 required_tests:
-  - 手動完成兩關流程、錯答提示、鑰匙解鎖、分數與結算畫面。
+  - 手動完成四個互動單元；檢查商品分類理由、六題題數、突發支出答錯提示、星鑰、各單元分數與結算畫面。
   - 在視窗模式檢查 3D 道具位置、比例、中文顯示與互動覆蓋層。
   - 對目標年齡進行有監護人／機構同意的可用性測試。
 passed_tests:
@@ -52,7 +54,10 @@ passed_tests:
   - Blender 5.2.4 LTS 腳本成功輸出 BLEND 與 GLB；遊戲透過 Godot GLTF API 載入模型，視窗中可見 3D 道具預覽。
   - Godot 4.7.2 Web 匯出成功；GitHub Pages Actions 將遊戲發布到 https://kellyku1025-stack.github.io/game2/，根網址導向版本化建置路徑。
   - 公開瀏覽器頁面已目視確認場景 B 與繁體中文正常顯示，瀏覽器 console 無 error/warning。
+pending_tests:
+  - 本次國中生四單元改版尚未執行 Godot 匯入、手動遊玩或網頁重新部署驗證。
 known_limitations:
-  - 目前是可玩初版，非最終驗收版本；視覺方向 B 已實作，兒童／教師玩家證據與最終驗收仍待完成。
+  - 四單元改版目前是待驗證的本機實作；GitHub Pages 目前仍是先前兩關版本。
+  - 國中生／教師玩家證據與最終驗收仍待完成。
   - 尚無玩家證據；設計評分均為 AI pre-score，不代表學習成效。
   - Blender Toolkit addon 未安裝；目前模型由 Blender Python 腳本生成。
