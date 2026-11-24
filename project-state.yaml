@@ -55,6 +55,7 @@ passed_tests:
   - Godot 4.7.2 Web 匯出成功；GitHub Pages Actions 將遊戲發布到 https://kellyku1025-stack.github.io/game2/，根網址導向版本化建置路徑。
   - 公開瀏覽器頁面已目視確認場景 B 與繁體中文正常顯示，瀏覽器 console 無 error/warning。
   - 國中生四單元修訂在提交 faed467 的 GitHub Actions run #7 匯出並部署成功；瀏覽器確認新版本 HUD 顯示「國中生生活理財任務」與單元 1 / 4。
+  - 新名稱「星港理財局：零用錢任務」在提交 622323d 的 Pages run #9 部署成功；瀏覽器分頁標題和遊戲 HUD 均顯示新名稱。
 pending_tests:
   - 國中生四單元改版尚未逐項手動遊玩；預算邊界、九項商品解釋、六題流程、突發支出重試及重新開始均待確認。
   - 目標年齡／教師可用性測試待安排。
