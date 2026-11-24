@@ -41,10 +41,17 @@ jobs:
         run: |
           set -euo pipefail
           godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
-          mkdir -p "$RUNNER_TEMP/site"
+          site="$RUNNER_TEMP/site"
+          versioned_site="$site/$GITHUB_SHA"
+          mkdir -p "$versioned_site"
           "$godot" --headless --path . --editor --quit
-          "$godot" --headless --path . --export-release "Web" "$RUNNER_TEMP/site/index.html"
-          test -s "$RUNNER_TEMP/site/index.html"
+          "$godot" --headless --path . --export-release "Web" "$versioned_site/index.html"
+          test -s "$versioned_site/index.html"
+          cat > "$site/index.html" <<EOF
+          <!doctype html>
+          <html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0; url=./$GITHUB_SHA/"><title>小小夢魔｜紙雕故事書</title></head>
+          <body><p>正在開啟最新版本的遊戲… <a href="./$GITHUB_SHA/">若沒有自動跳轉，請按此開始</a></p><script>window.location.replace('./$GITHUB_SHA/');</script></body></html>
+          EOF
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
