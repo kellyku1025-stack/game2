@@ -134,7 +134,13 @@ func _build_ui() -> void:
 	var layer := CanvasLayer.new()
 	add_child(layer)
 	var paper_theme := Theme.new()
-	paper_theme.default_font = load("res://assets/fonts/NotoSansTC-Variable.ttf")
+	var cjk_font := FontFile.new()
+	if cjk_font.load_dynamic_font("res://assets/fonts/NotoSansTC-Variable.ttf") == OK:
+		paper_theme.default_font = cjk_font
+		paper_theme.set_font("font", "Label", cjk_font)
+		paper_theme.set_font("font", "Button", cjk_font)
+	else:
+		push_warning("Noto Sans TC could not be loaded; CJK text may not display.")
 	paper_theme.set_color("font_color", "Label", Color("34443d"))
 	paper_theme.set_color("font_color", "Button", Color("34443d"))
 	paper_theme.set_stylebox("normal", "Button", _paper_style(Color("e6d8bb"), Color("9d704e"), 2, 7))
