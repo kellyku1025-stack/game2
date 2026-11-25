@@ -46,7 +46,6 @@ var lesson_box: VBoxContainer
 var feedback_label: Label
 var action_button: Button
 var choice_box: VBoxContainer
-var score_labels: Array[Label] = []
 var notice_label: Label
 var travel_button: Button
 var prop_view: SubViewport
@@ -67,12 +66,13 @@ func _process(delta: float) -> void:
 	var direction := Input.get_axis("ui_left", "ui_right")
 	if Input.is_key_pressed(KEY_A): direction -= 1.0
 	if Input.is_key_pressed(KEY_D): direction += 1.0
-	player_x = clampf(player_x + direction * 245.0 * delta, 45.0, 1235.0)
+	if not is_zero_approx(direction):
+		player_x = clampf(player_x + direction * 245.0 * delta, 45.0, 1235.0)
+		queue_redraw()
 	if Input.is_key_pressed(KEY_E) and absf(player_x - 900.0) < 210.0:
 		open_interaction()
 	if player_x > 1210.0 and solved[stage]:
 		_travel_forward()
-	queue_redraw()
 
 func _input(event: InputEvent) -> void:
 	if active or finished or not (event is InputEventMouseButton):
@@ -88,56 +88,133 @@ func _input(event: InputEvent) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var wall := Color("dbe6d8") if stage == 0 else Color("d9e1d3")
-	var paper_shadow := Color("786f5d", 0.22)
-	draw_rect(Rect2(0, 0, 1280, 720), Color("e8dfc9"))
-	# Layered cut-paper wall panels and folded beams.
-	draw_colored_polygon(PackedVector2Array([Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 126), Vector2(0, 164)]), paper_shadow)
-	draw_colored_polygon(PackedVector2Array([Vector2(0, 0), Vector2(1280, 0), Vector2(1280, 112), Vector2(0, 148)]), wall)
-	draw_line(Vector2(0, 148), Vector2(1280, 112), Color("91a78d"), 5)
-	for i in range(7):
-		var x := float(i * 192 - 15)
-		var panel_points := PackedVector2Array([Vector2(x, 158), Vector2(x + 164, 149), Vector2(x + 164, 414), Vector2(x, 424)])
-		_draw_paper_layer(panel_points, Color("887c65", 0.16), [Color("b8c9b2"), Color("e6d8bb"), Color("d9c7a4")][i % 3], 7.0)
-		for y in range(180, 402, 58):
-			draw_line(Vector2(x + 18, y), Vector2(x + 145, y - 5), Color("788f7d", 0.30), 3)
-	# A cream floor with paper tile seams.
-	draw_colored_polygon(PackedVector2Array([Vector2(0, 450), Vector2(1280, 424), Vector2(1280, 720), Vector2(0, 720)]), Color("c5b99e"))
-	for y in range(480, 720, 52):
-		draw_line(Vector2(0, y), Vector2(1280, y - 26), Color("f0e5cd", 0.8), 3)
-	for x in range(0, 1280, 112):
-		draw_line(Vector2(x, 445), Vector2(x - 22, 720), Color("f0e5cd", 0.72), 3)
-	# The arch opens after the key is earned.
-	var door := PackedVector2Array([Vector2(1162, 438), Vector2(1162, 265), Vector2(1179, 226), Vector2(1211, 211), Vector2(1245, 226), Vector2(1260, 265), Vector2(1260, 438)])
-	_draw_paper_layer(door, paper_shadow, Color("a66a42") if solved[stage] else Color("728775"), 8.0)
-	draw_colored_polygon(PackedVector2Array([Vector2(1176, 429), Vector2(1176, 266), Vector2(1188, 238), Vector2(1211, 226), Vector2(1234, 238), Vector2(1246, 266), Vector2(1246, 429)]), Color("e8dfc9"))
-	if solved[stage]: draw_line(Vector2(1178, 425), Vector2(1178, 264), Color("d38b54"), 7)
-	# Paper workbench and parcels make the interaction easy to spot.
-	draw_circle(Vector2(900, 300), 145, Color("f3c96e", 0.17))
-	draw_rect(Rect2(773, 237, 24, 209), Color("9c714e"))
-	draw_rect(Rect2(1012, 237, 24, 209), Color("9c714e"))
-	draw_rect(Rect2(758, 343, 300, 23), Color("b8794c"))
-	draw_line(Vector2(760, 343), Vector2(1056, 343), Color("e2ad71"), 5)
-	draw_rect(Rect2(770, 424, 276, 18), Color("a66a42"))
-	for i in range(3):
-		var bx := 798.0 + i * 72
-		var parcel := PackedVector2Array([Vector2(bx, 335), Vector2(bx + 4, 304), Vector2(bx + 48, 304), Vector2(bx + 53, 335)])
-		_draw_paper_layer(parcel, paper_shadow, [Color("718f78"), Color("c38a55"), Color("8b7f9e")][i], 4.0)
-		draw_line(Vector2(bx + 8, 311), Vector2(bx + 46, 311), Color("f2dfbd"), 3)
-	# Original little traveler in a warm paper cloak.
-	draw_line(Vector2(player_x - 10, 430), Vector2(player_x - 15, 455), Color("695747"), 5)
-	draw_line(Vector2(player_x + 10, 430), Vector2(player_x + 15, 455), Color("695747"), 5)
-	draw_circle(Vector2(player_x, 371), 14, Color("d5a46f"))
-	_draw_paper_layer(PackedVector2Array([Vector2(player_x - 17, 383), Vector2(player_x + 17, 383), Vector2(player_x + 26, 434), Vector2(player_x - 25, 434)]), paper_shadow, Color("c47b45"), 5.0)
-	draw_colored_polygon(PackedVector2Array([Vector2(player_x - 11, 392), Vector2(player_x + 11, 392), Vector2(player_x + 16, 430), Vector2(player_x - 16, 430)]), Color("e3a95d"))
+	# Bright, original isometric starport island with a lagoon and tiny market.
+	draw_rect(Rect2(0, 0, 1280, 720), Color("65c9c5"))
+	for i in range(34):
+		var wx := float((i * 173 + 47) % 1260)
+		var wy := float((i * 97 + 30) % 700)
+		_draw_oval(Vector2(wx, wy), 13.0 + float(i % 4) * 3.0, 2.2, Color("b4eee1", 0.40))
+	# Floating island edge and sunlit grassy top.
+	var cliff := PackedVector2Array([Vector2(-60, 324), Vector2(78, 208), Vector2(270, 158), Vector2(463, 181), Vector2(620, 132), Vector2(825, 162), Vector2(1035, 180), Vector2(1272, 268), Vector2(1345, 400), Vector2(1288, 565), Vector2(1110, 660), Vector2(940, 691), Vector2(740, 740), Vector2(480, 716), Vector2(258, 662), Vector2(78, 581), Vector2(-40, 465)])
+	draw_colored_polygon(cliff, Color("ae8757"))
+	var grass_edge := PackedVector2Array([Vector2(-65, 300), Vector2(74, 186), Vector2(268, 135), Vector2(464, 158), Vector2(620, 112), Vector2(825, 143), Vector2(1035, 158), Vector2(1276, 246), Vector2(1332, 377), Vector2(1275, 540), Vector2(1098, 635), Vector2(927, 664), Vector2(733, 710), Vector2(478, 688), Vector2(255, 632), Vector2(72, 550), Vector2(-55, 438)])
+	draw_colored_polygon(grass_edge, Color("8de09c"))
+	# Dappled meadow patches.
+	for i in range(72):
+		var gx := float((i * 139 + 95) % 1260)
+		var gy := float(215 + (i * 83 + 30) % 410)
+		var tint := [Color("a8e9a4", 0.55), Color("d0ef9b", 0.48), Color("72cd86", 0.38)][i % 3]
+		_draw_oval(Vector2(gx, gy), 24.0 + float(i % 5) * 4.0, 6.5, tint)
+	# Pebbled shoreline around the island.
+	for i in range(25):
+		var rx := float(i * 53 - 20)
+		var ry := 330.0 + sin(float(i) * 0.43) * 95.0
+		_draw_oval(Vector2(rx, ry), 15.0 + float(i % 3) * 3.0, 9.0, [Color("f5dfb1"), Color("d8c59a"), Color("fff0cb")][i % 3])
+	# Winding cream footpaths connect the four learning stops.
+	var path := PackedVector2Array([Vector2(130, 574), Vector2(275, 522), Vector2(415, 552), Vector2(558, 490), Vector2(700, 510), Vector2(838, 450), Vector2(1010, 461), Vector2(1170, 403)])
+	draw_polyline(path, Color("c4b47c", 0.42), 42.0, true)
+	draw_polyline(path, Color("fff1c7"), 31.0, true)
+	# Original little gardens, tents, kiosks and companion critters.
+	_draw_garden(Vector2(334, 338), 1.0)
+	_draw_garden(Vector2(522, 287), 0.83)
+	_draw_tree(Vector2(155, 344), 0.90, Color("33aa78"))
+	_draw_tree(Vector2(678, 213), 0.74, Color("60c887"))
+	_draw_tree(Vector2(1118, 326), 0.92, Color("ed9caf"))
+	_draw_tree(Vector2(1050, 542), 0.74, Color("348f73"))
+	_draw_kiosk(Vector2(522, 448), Color("efb65a"), Color("fff1c9"), "★")
+	_draw_kiosk(Vector2(728, 367), Color("42b6c0"), Color("e7fbf1"), "早餐")
+	_draw_kiosk(Vector2(910, 408), Color("ef9270"), Color("fff0d5"), "便利")
+	_draw_kiosk(Vector2(1070, 456), Color("8674cf"), Color("f4e9ff"), "雜貨")
+	_draw_helper(Vector2(448, 510), Color("fff1d0"), Color("ef8b55"))
+	_draw_helper(Vector2(790, 480), Color("e3f4ec"), Color("42aeb2"))
+	_draw_helper(Vector2(1003, 526), Color("fff0df"), Color("9775cf"))
+	_draw_landmark()
+	# The traveler moves along the lower path; a glowing marker shows the interaction point.
+	_draw_oval(Vector2(900, 501), 47, 13, Color("fff1a9", 0.45))
+	_draw_character(Vector2(player_x, 536))
 
-func _draw_paper_layer(points: PackedVector2Array, shadow: Color, paper: Color, offset: float) -> void:
-	var shifted := PackedVector2Array()
-	for point in points:
-		shifted.append(point + Vector2(offset, offset))
-	draw_colored_polygon(shifted, shadow)
-	draw_colored_polygon(points, paper)
-	draw_polyline(points, Color("fff7e7", 0.58), 2.0, true)
+func _draw_oval(center: Vector2, rx: float, ry: float, color: Color) -> void:
+	var points := PackedVector2Array()
+	for i in range(25):
+		var angle := TAU * float(i) / 24.0
+		points.append(center + Vector2(cos(angle) * rx, sin(angle) * ry))
+	draw_colored_polygon(points, color)
+
+func _draw_diamond(center: Vector2, width: float, height: float, color: Color) -> void:
+	draw_colored_polygon(PackedVector2Array([center + Vector2(0, -height * 0.5), center + Vector2(width * 0.5, 0), center + Vector2(0, height * 0.5), center + Vector2(-width * 0.5, 0)]), color)
+
+func _draw_tree(base: Vector2, scale: float, crown: Color) -> void:
+	_draw_oval(base + Vector2(3, 3), 35 * scale, 11 * scale, Color("458d5f", 0.25))
+	draw_polygon(PackedVector2Array([base + Vector2(-9 * scale, 0), base + Vector2(9 * scale, 0), base + Vector2(7 * scale, -61 * scale), base + Vector2(-5 * scale, -65 * scale)]), PackedColorArray([Color("a46e43"), Color("8e5a39"), Color("b9824e"), Color("a46e43")]))
+	_draw_oval(base + Vector2(-9 * scale, -63 * scale), 28 * scale, 24 * scale, crown.darkened(0.08))
+	_draw_oval(base + Vector2(12 * scale, -78 * scale), 30 * scale, 27 * scale, crown)
+	_draw_oval(base + Vector2(-1 * scale, -91 * scale), 25 * scale, 22 * scale, crown.lightened(0.12))
+	_draw_oval(base + Vector2(16 * scale, -63 * scale), 18 * scale, 17 * scale, crown.lightened(0.08))
+
+func _draw_garden(center: Vector2, scale: float) -> void:
+	_draw_diamond(center + Vector2(5, 16), 142 * scale, 57 * scale, Color("a57546"))
+	_draw_diamond(center, 137 * scale, 53 * scale, Color("f1d5a1"))
+	_draw_diamond(center + Vector2(0, -3), 119 * scale, 42 * scale, Color("75c96f"))
+	for row in range(3):
+		for col in range(4):
+			var p := center + Vector2((float(col) - 1.5) * 24 * scale, (float(row) - 1.0) * 10 * scale - 5)
+			_draw_oval(p, 6 * scale, 4 * scale, [Color("3d9b61"), Color("55ad5e"), Color("76bf62")][(row + col) % 3])
+			_draw_oval(p + Vector2(2, -4 * scale), 3 * scale, 4 * scale, Color("bfe37d"))
+
+func _draw_kiosk(base: Vector2, roof: Color, wall: Color, sign: String) -> void:
+	_draw_oval(base + Vector2(0, 21), 74, 20, Color("4b8f70", 0.25))
+	_draw_diamond(base + Vector2(0, 9), 125, 48, Color("e8d59c"))
+	draw_colored_polygon(PackedVector2Array([base + Vector2(-42, 0), base + Vector2(0, 18), base + Vector2(0, -49), base + Vector2(-42, -66)]), wall.darkened(0.10))
+	draw_colored_polygon(PackedVector2Array([base + Vector2(0, 18), base + Vector2(43, 0), base + Vector2(43, -64), base + Vector2(0, -49)]), wall)
+	draw_colored_polygon(PackedVector2Array([base + Vector2(-51, -62), base + Vector2(0, -86), base + Vector2(53, -64), base + Vector2(0, -39)]), roof)
+	draw_colored_polygon(PackedVector2Array([base + Vector2(-51, -62), base + Vector2(-51, -53), base + Vector2(0, -29), base + Vector2(0, -39)]), roof.darkened(0.14))
+	draw_colored_polygon(PackedVector2Array([base + Vector2(0, -39), base + Vector2(0, -29), base + Vector2(53, -54), base + Vector2(53, -64)]), roof.darkened(0.08))
+	draw_rect(Rect2(base + Vector2(-27, -43), Vector2(18, 27)), Color("8bd7d2"))
+	draw_rect(Rect2(base + Vector2(8, -41), Vector2(18, 24)), Color("fff4cc"))
+	draw_rect(Rect2(base + Vector2(-1, -47), Vector2(3, 38)), Color("fff4cc"))
+	_draw_oval(base + Vector2(0, -71), 25, 12, Color("fff8dc"))
+	# Sign is intentionally icon-like and uses no copied logo.
+	draw_circle(base + Vector2(0, -72), 7, Color("e9aa43"))
+
+func _draw_helper(base: Vector2, fur: Color, accent: Color) -> void:
+	_draw_oval(base + Vector2(1, 4), 16, 6, Color("456e60", 0.22))
+	_draw_oval(base + Vector2(0, -11), 12, 12, fur)
+	_draw_oval(base + Vector2(-7, -21), 5, 7, fur)
+	_draw_oval(base + Vector2(7, -21), 5, 7, fur)
+	draw_circle(base + Vector2(-4, -12), 1.7, Color("34443d"))
+	draw_circle(base + Vector2(4, -12), 1.7, Color("34443d"))
+	draw_circle(base + Vector2(0, -7), 2.0, accent)
+
+func _draw_character(base: Vector2) -> void:
+	_draw_oval(base + Vector2(0, 3), 20, 7, Color("426b58", 0.28))
+	draw_line(base + Vector2(-6, -7), base + Vector2(-9, 2), Color("62493b"), 4)
+	draw_line(base + Vector2(6, -7), base + Vector2(9, 2), Color("62493b"), 4)
+	_draw_oval(base + Vector2(0, -31), 17, 23, Color("f08a51"))
+	_draw_oval(base + Vector2(0, -55), 13, 13, Color("f3c79c"))
+	draw_colored_polygon(PackedVector2Array([base + Vector2(-12, -61), base + Vector2(-6, -81), base + Vector2(2, -69), base + Vector2(13, -80), base + Vector2(11, -58)]), Color("41aeb7"))
+	draw_circle(base + Vector2(-4, -55), 1.4, Color("3e534c"))
+	draw_circle(base + Vector2(4, -55), 1.4, Color("3e534c"))
+
+func _draw_landmark() -> void:
+	match stage:
+		0:
+			_draw_diamond(Vector2(554, 430), 92, 45, Color("69c3b4"))
+			_draw_diamond(Vector2(554, 414), 74, 36, Color("daf1d1"))
+			_draw_oval(Vector2(554, 410), 23, 10, Color("f4cb65"))
+		1:
+			for i in range(3):
+				var x := 722.0 + i * 180.0
+				_draw_diamond(Vector2(x, 400 + i * 12), 36, 17, Color("fff1c5"))
+				draw_rect(Rect2(x - 3, 383 + i * 12, 6, 20), Color("f39a59"))
+				draw_circle(Vector2(x, 379 + i * 12), 9, Color("f3cc58"))
+		2:
+			_draw_diamond(Vector2(904, 358), 108, 49, Color("e7d3a2"))
+			draw_rect(Rect2(860, 288, 88, 70), Color("f9f0d7"))
+			for i in range(3): draw_circle(Vector2(882 + i * 21, 310), 8, [Color("ef6962"), Color("f5c84c"), Color("6acb77")][i])
+		3:
+			_draw_kiosk(Vector2(903, 368), Color("68c9a1"), Color("f5eed9"), "+")
+			_draw_diamond(Vector2(993, 452), 65, 28, Color("eab957"))
+			_draw_diamond(Vector2(993, 441), 56, 24, Color("ffdc78"))
 
 func _build_ui() -> void:
 	var layer := CanvasLayer.new()
@@ -150,31 +227,42 @@ func _build_ui() -> void:
 		paper_theme.set_font("font", "Button", cjk_font)
 	else:
 		push_warning("Noto Sans TC could not be loaded; CJK text may not display.")
-	paper_theme.set_color("font_color", "Label", Color("34443d"))
-	paper_theme.set_color("font_color", "Button", Color("34443d"))
-	paper_theme.set_stylebox("normal", "Button", _paper_style(Color("e6d8bb"), Color("9d704e"), 2, 7))
-	paper_theme.set_stylebox("hover", "Button", _paper_style(Color("f2e5ca"), Color("a66a42"), 3, 7))
-	paper_theme.set_stylebox("pressed", "Button", _paper_style(Color("c9d5c3"), Color("718f78"), 2, 7))
-	paper_theme.set_stylebox("focus", "Button", _paper_style(Color("00000000"), Color("a66a42"), 2, 7))
+	paper_theme.set_color("font_color", "Label", Color("173c3c"))
+	paper_theme.set_color("font_color", "Button", Color("173c3c"))
+	paper_theme.set_stylebox("normal", "Button", _paper_style(Color("fffdf4"), Color("38a99c"), 2, 7))
+	paper_theme.set_stylebox("hover", "Button", _paper_style(Color("e1f8dc"), Color("248e84"), 3, 7))
+	paper_theme.set_stylebox("pressed", "Button", _paper_style(Color("bcebd1"), Color("238777"), 2, 7))
+	paper_theme.set_stylebox("focus", "Button", _paper_style(Color("fffdf4"), Color("ee9a58"), 3, 7))
+	paper_theme.set_font_size("font_size", "Label", 17)
+	paper_theme.set_font_size("font_size", "Button", 17)
+	var hud_card := PanelContainer.new()
+	hud_card.theme = paper_theme
+	hud_card.position = Vector2(18, 14)
+	hud_card.size = Vector2(500, 152)
+	hud_card.custom_minimum_size = Vector2(500, 152)
+	hud_card.add_theme_stylebox_override("panel", _paper_style(Color("fffdf4", 0.97), Color("ffffff", 0.88), 2, 9))
+	layer.add_child(hud_card)
 	hud = VBoxContainer.new()
 	hud.theme = paper_theme
-	hud.position = Vector2(28, 20)
-	hud.add_theme_constant_override("separation", 5)
-	layer.add_child(hud)
+	hud.add_theme_constant_override("separation", 4)
+	hud_card.add_child(hud)
 	_add_model_preview(layer)
+	var notice_card := PanelContainer.new()
+	notice_card.theme = paper_theme
+	notice_card.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	notice_card.position = Vector2(-390, -84)
+	notice_card.size = Vector2(780, 43)
+	notice_card.add_theme_stylebox_override("panel", _paper_style(Color("fffdf4", 0.97), Color("ffffff", 0.80), 2, 6))
 	notice_label = Label.new()
-	notice_label.theme = paper_theme
-	notice_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	notice_label.position = Vector2(-330, -64)
-	notice_label.size = Vector2(660, 40)
 	notice_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	notice_label.add_theme_color_override("font_color", Color("34443d"))
-	notice_label.add_theme_font_size_override("font_size", 18)
-	layer.add_child(notice_label)
+	notice_label.add_theme_color_override("font_color", Color("173c3c"))
+	notice_label.add_theme_font_size_override("font_size", 16)
+	notice_card.add_child(notice_label)
+	layer.add_child(notice_card)
 	travel_button = Button.new()
 	travel_button.theme = paper_theme
 	travel_button.position = Vector2(28, 650)
-	travel_button.size = Vector2(230, 46)
+	travel_button.size = Vector2(246, 50)
 	travel_button.text = "前往理財互動桌"
 	travel_button.pressed.connect(_on_travel_pressed)
 	layer.add_child(travel_button)
@@ -197,7 +285,7 @@ func _paper_style(fill: Color, border: Color, width: int, shadow_size: int) -> S
 	style.bg_color = fill
 	style.border_color = border
 	style.set_border_width_all(width)
-	style.set_corner_radius_all(5)
+	style.set_corner_radius_all(18)
 	style.shadow_color = Color("594e3d", 0.22)
 	style.shadow_size = shadow_size
 	style.shadow_offset = Vector2(3, 4)
@@ -208,9 +296,14 @@ func _paper_style(fill: Color, border: Color, width: int, shadow_size: int) -> S
 	return style
 
 func _add_model_preview(layer: CanvasLayer) -> void:
+	var prop_card := PanelContainer.new()
+	prop_card.position = Vector2(1000, 12)
+	prop_card.size = Vector2(258, 145)
+	prop_card.add_theme_stylebox_override("panel", _paper_style(Color("fffdf4", 0.97), Color("ffffff", 0.88), 2, 9))
+	layer.add_child(prop_card)
 	var display := SubViewportContainer.new()
-	display.position = Vector2(1000, 16)
-	display.size = Vector2(245, 130)
+	display.position = Vector2(1005, 17)
+	display.size = Vector2(248, 130)
 	display.stretch = true
 	display.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(display)
@@ -257,21 +350,38 @@ func refresh_hud() -> void:
 	if not is_instance_valid(hud): return
 	for child in hud.get_children(): child.queue_free()
 	var level_name: String = STAGE_TITLES[stage]
-	var key_text := "已取得" if solved[stage] else "尚未取得"
 	var total_score := 0
 	for score in scores: total_score += score
-	var rows := [
-		"星港理財局｜零用錢任務",
-		"單元 %d / 4　%s" % [stage + 1, level_name],
-		"本單元 %d 分　｜　累計 %d / 400　｜　本單元星鑰：%s" % [scores[stage], total_score, key_text],
-		"A / D 或方向鍵移動　　完成互動取得星鑰"
-	]
-	for i in rows.size():
-		var label := Label.new()
-		label.text = rows[i]
-		label.add_theme_color_override("font_color", [Color("34443d"), Color("52665b"), Color("a66a42"), Color("68736a")][i])
-		if i == 0: label.add_theme_font_size_override("font_size", 23)
-		hud.add_child(label)
+	var title := Label.new()
+	title.text = "星港理財局｜零用錢任務"
+	title.add_theme_color_override("font_color", Color("173c3c"))
+	title.add_theme_font_size_override("font_size", 23)
+	hud.add_child(title)
+	var stage_label := Label.new()
+	stage_label.text = "單元 %d / 4　%s" % [stage + 1, level_name]
+	stage_label.add_theme_color_override("font_color", Color("256b63"))
+	stage_label.add_theme_font_size_override("font_size", 17)
+	hud.add_child(stage_label)
+	var progress := ProgressBar.new()
+	progress.min_value = 0
+	progress.max_value = 4
+	progress.value = solved.count(true)
+	progress.show_percentage = false
+	progress.custom_minimum_size.y = 16
+	var progress_bg := StyleBoxFlat.new()
+	progress_bg.bg_color = Color("d9ead7")
+	progress_bg.set_corner_radius_all(8)
+	var progress_fill := StyleBoxFlat.new()
+	progress_fill.bg_color = Color("54c66d")
+	progress_fill.set_corner_radius_all(8)
+	progress.add_theme_stylebox_override("background", progress_bg)
+	progress.add_theme_stylebox_override("fill", progress_fill)
+	hud.add_child(progress)
+	var score_line := Label.new()
+	score_line.text = "本單元 %d / 100　　累計 %d / 400　　星鑰 %d / 4" % [scores[stage], total_score, solved.count(true)]
+	score_line.add_theme_color_override("font_color", Color("214d49"))
+	score_line.add_theme_font_size_override("font_size", 15)
+	hud.add_child(score_line)
 	if is_instance_valid(notice_label):
 		notice_label.text = notice if notice_time > 0.0 else ""
 	if is_instance_valid(travel_button):

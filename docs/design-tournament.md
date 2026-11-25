@@ -66,4 +66,4 @@ Use age-appropriate tasks and guardian/institution consent before child playtest
 
 The user selected **D — 貨艙星箱配置**. Alternatives A and E remain viable but were not selected; B is the close fourth-place option; C and F are dominated by D on G/P/D. This decision is recorded in `decision-log.md`.
 
-The playable build implements D using three-box saving and investment allocation. Visual direction B is approved; the Godot scene is being updated to the selected paper-cut storybook style. Player/teacher evidence and final acceptance remain open.
+The playable build's junior-high revision contains four sequential finance activities. Its visual direction has been superseded by the user's newer reference images: bright, colorful isometric island management with original shops, gardens, lagoon, characters, and rounded HUD. Player/teacher evidence and final acceptance remain open.

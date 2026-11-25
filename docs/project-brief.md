@@ -36,7 +36,7 @@ No AI runs in the game. Game rules, scoring, answers, and progression are determ
 
 ## MVP and non-goals
 
-MVP: four sequential interactions: (1) allocate a budget among needs, wants, savings, and investment; (2) classify items at a breakfast shop, convenience store, and traditional grocery; (3) make six traffic-light spending decisions; (4) respond to an unexpected expense. Each unit has a score and answer-gated key; the ending shows progress across all four units. Retain original paper-cut storybook visuals and Blender-made 3D props.
+MVP: four sequential interactions: (1) allocate a budget among needs, wants, savings, and investment; (2) classify items at a breakfast shop, convenience store, and traditional grocery; (3) make six traffic-light spending decisions; (4) respond to an unexpected expense. Each unit has a score and answer-gated key; the ending shows progress across all four units. Use an original, bright isometric starport island with colorful shops, gardens, a lagoon, playful helpers, and high-contrast rounded HUD panels; do not copy logos, characters, or scene layouts from the visual references. Retain original Blender-made 3D props.
 
 Non-goals: real money, real investment recommendations, online accounts, student data collection, multiplayer, horror violence, or copying Little Nightmares characters or locations.
 
