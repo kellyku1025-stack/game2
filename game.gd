@@ -103,7 +103,7 @@ func _draw() -> void:
 	for i in range(72):
 		var gx := float((i * 139 + 95) % 1260)
 		var gy := float(215 + (i * 83 + 30) % 410)
-		var tint := [Color("a8e9a4", 0.55), Color("d0ef9b", 0.48), Color("72cd86", 0.38)][i % 3]
+		var tint: Color = [Color("a8e9a4", 0.55), Color("d0ef9b", 0.48), Color("72cd86", 0.38)][i % 3]
 		_draw_oval(Vector2(gx, gy), 24.0 + float(i % 5) * 4.0, 6.5, tint)
 	# Pebbled shoreline around the island.
 	for i in range(25):
